@@ -199,11 +199,11 @@
 </blockquote>
 <span id="more"></span>
 <h3 id="1-giscus评论系统-无法正常显示"><a href="#1-giscus评论系统-无法正常显示" class="headerlink" title="1.giscus评论系统 无法正常显示"></a>1.giscus评论系统 无法正常显示</h3><p>该问题发现于<a href="https://torae233.github.io/2024/12/04/%E6%88%91%E7%8E%A9%E9%BB%91%E7%A5%9E%E8%AF%9D%E6%82%9F%E7%A9%BAbelike%EF%BC%9A/">我玩 黑神话:悟空 belike： | とらえの小窝</a><br>该博客嵌套了两个B站的视频， 评论面板直接消失了，移动端更是出现了文字叠加的情况<br><img src="/images/giscus2.png" alt="图片" title="如图"><br><strong>2025&#x2F;4&#x2F;4更新：</strong>该问题解决于<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_64561305/article/details/141689766?ops_request_misc=&request_id=&biz_id=102&utm_term=hexo%E6%8F%92%E5%85%A5bilibili%E8%A7%86%E9%A2%91&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-141689766.142%5Ev100%5Epc_search_result_base6&spm=1018.2226.3001.4187">hexo插入哔哩哔哩视频_bilibili视频嵌入代码-CSDN博客</a><br>发现是代码缩进拉伸视频导致的Bug，因采用了错误的代码格式，如下</p>
-<pre><code>&lt;div style=&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;&gt;
+<pre><code>&lt;div style=&quot;position: relative; width: 175%; height: 0; padding-bottom: 75%;&quot;&gt;
 +B站官方提供的嵌入代码
 </code></pre>
 <p>后面直接使用了B站网站提供的嵌入代码，产生了代码冲突<br>更改为正确代码即可完成Bug修复<br>正确代码为：</p>
-<pre><code>&lt;div style=&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;&gt;
+<pre><code>&lt;div style=&quot;position: relative; width: 175%; height: 0; padding-bottom: 75%;&quot;&gt;
 &lt;iframe src=&quot;哔哩哔哩视频链接&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot; style=&quot;position: absolute; width: 100%; height: 100%; Left: 0; top: 0;&quot; &gt;&lt;/iframe&gt;&lt;/div&gt;
 </code></pre>
 <hr>
