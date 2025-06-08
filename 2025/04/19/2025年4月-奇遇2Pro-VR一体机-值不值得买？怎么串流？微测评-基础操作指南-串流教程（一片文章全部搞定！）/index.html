@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>2025年4月 奇遇2Pro VR一体机 值不值得买？怎么串流？微测评+基础操作指南+串流教程（一片文章全部搞定！） | とらえの小窝</title>
+    <meta name="author" content="胡傲魁（とらえ)" />
+    <meta name="description" content="一个热爱音乐，爱玩FPS和Galgame的无产阶级革命者" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/Tomoko.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/JMloading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>とらえの小窝</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;とらえの小窝</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>2025年4月 奇遇2Pro VR一体机 值不值得买？怎么串流？微测评+基础操作指南+串流教程（一片文章全部搞定！）</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/4/19
+        </span>
+        
+        <span class="category">
+            <a href="/categories/VR%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                VR知识分享
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E5%A5%87%E9%81%872Pro-VR%E4%B8%80%E4%BD%93%E6%9C%BA/" style="color: #00bcd4">
+                    奇遇2Pro VR一体机
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><img src="/images/Q2VR0.jpg" alt="图片" title="奇遇2Pro VR一体机"></p>
+<span id="more"></span>
+<blockquote>
+<p>！！！首先声明，以下内容均为个人看法,无不良引导！！！</p>
+</blockquote>
+<h2 id="视频教程："><a href="#视频教程：" class="headerlink" title="视频教程："></a>视频教程：</h2><div style="position: relative; width: 175%; height: 0; padding-bottom: 75%;">
+<iframe src="https://www.bilibili.com/video/BV17U5nz3Edo/?spm_id_from=333.1387.list.card_archive.click&vd_source=0b67caafcee3a52a1f8e501a83f56216" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; Left: 0; top: 0;" ></iframe></div>
+
+<hr>
+<p>以下 奇遇2Pro VR一体机 简称Q2，奇遇3简称Q3</p>
+<h3 id="2025年4月-奇遇2Pro-VR一体机-值不值得买？"><a href="#2025年4月-奇遇2Pro-VR一体机-值不值得买？" class="headerlink" title="2025年4月 奇遇2Pro VR一体机 值不值得买？"></a>2025年4月 奇遇2Pro VR一体机 值不值得买？</h3><p>首先你应该知道：Q2目前咸鱼均价500软妹币左右，而Q3为700软妹币左右。Q2的自带串流只能用VIVEPORT,不能用奇遇官方串流工具 <strong>奇遇VR串流助手</strong>，而VIVEPORT串流需要充会员（一年480软妹币）（Q3可以用奇遇VR串流助手）</p>
+<p>截止2025年4月19日，在闲鱼上能买到的最便宜的可串流VR（500软妹币左右）有：奇遇&#x2F;YVR（基本买不到了，600以上极其不推荐入手）&#x2F;PICO NOLO X1&#x2F;Oculus rift s&#x2F;联想拯救者VR700&#x2F;还有各大品牌的MR（比如三星玄龙MR）好吧，严格意义上MR这种XR类型不算VR，但它毕竟能作为PCVR串流用对吧</p>
+<p>单看硬件参数的话，6+128+4K 貌似还不错,那么到底值不值得买还要看你的需求。</p>
+<p>如果你买VR只是为了体验一下或者看片，Q2能够为你带来不错的体验（500软妹币的4K你还要什么自行车？）</p>
+<p>如果你和我一样是奔着串流VR游戏&#x2F;PCVR&#x2F;SteamVR去的，那么！！！请慎重考虑！！！</p>
+<p>首先是<strong>硬件问题</strong>：Q2（可能奇遇全系列）的定位做的非常差劲，手柄总是漂移和方向错乱！在节奏光剑和FPS这些非常吃定位的游戏里，别人我不知道，反正我的体验是糟糕透了，只能体验一下，想好好玩真的不太行</p>
+<p>其次是<strong>串流问题</strong>：とらえ通宵了一整晚尝试寻找一切可行的第三方串流方案，均以失败告终，Q2不能安装第三方APP，不能打开开发者模式进行ADB调试（深度刷机我怕VR一体机变砖就没敢搞），串流只有使用VIVEPORT这一种方式！（如果有大佬解决了还请分享出来！）</p>
+<p>重要的事情说三遍：</p>
+<blockquote>
+<p>使用VIVEPORT串流要充会员！一年480软妹币！<br>使用VIVEPORT串流要充会员！一年480软妹币！<br>使用VIVEPORT串流要充会员！一年480软妹币！</p>
+</blockquote>
+<p>是否值得你入手，还请三思而后行！<br>毕竟Q3只贵了200软妹币就可以使用奇遇VR串流助手免费串流，还有大佬改进的ALVR<a target="_blank" rel="noopener" href="https://tieba.baidu.com/p/9404091043">【首发】奇遇VR串流软件 ALVR修改版【爱奇艺vr吧】_百度贴吧</a></p>
+<hr>
+<h3 id="奇遇2Pro-VR一体机-怎么串流？"><a href="#奇遇2Pro-VR一体机-怎么串流？" class="headerlink" title="奇遇2Pro VR一体机 怎么串流？"></a>奇遇2Pro VR一体机 怎么串流？</h3><div style="position: relative; width: 175%; height: 0; padding-bottom: 75%;">
+<iframe src="https://www.bilibili.com/video/BV1kt4y1S7Ds/?spm_id_from=333.1387.favlist.content.click&vd_source=0b67caafcee3a52a1f8e501a83f56216" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; Left: 0; top: 0;" ></iframe></div>
+
+<p>请看这个UP的视频，该讲的地方没讲，不该讲的地方都讲了，请搭配以下补充知识点：</p>
+<p>1.必须要点击<strong>控制中心</strong>的<strong>VIVEPORT 串流 beta</strong>,在<strong>全部应用</strong>点击VIVEPORT的APP不行</p>
+<p>2.VIVEPORT在注册登录时不需要VPN！！！大陆直连就行，用VPN会导致出错而无法注册登录（我用Proton VPN就是这样）</p>
+<p>3.串流之前请确保一体机和电脑在同一局域网之下，并且都安装打开了最新版本的VIVEPORT的APP，两个设备上必须登录同一账号</p>
+<p>4.串流之前还需确保你已经开通了<strong>无限会员全量版</strong>！切记一定是全量版！不要像とらえ一样错买成轻量版，轻量版没有任何卵用！虚拟商品不支持退款，白搭进去28软妹币</p>
+<p>5.请给这个UP一键三连加关注！</p>
+<hr>
+<h3 id="微测评"><a href="#微测评" class="headerlink" title="微测评"></a>微测评</h3><p><img src="/images/Q2VR1.jpg" alt="图片" title="奇遇2Pro VR一体机"><br><img src="/images/Q2VR2.jpg" alt="图片" title="奇遇2Pro VR一体机"><br>爱奇艺奇遇2 Pro主要参数：</p>
+<p>CPU：高通骁龙835</p>
+<p>屏幕分辨率：3840*2160px，818ppi</p>
+<p>屏幕材质：快闪LCD</p>
+<p>刷新率：75Hz</p>
+<p>FOV: 110度</p>
+<p>存储：128G ROM &#x2F; 6G RAM，支持TF卡扩展</p>
+<p>重量：318g（不含绑带）</p>
+<p>电池：4500mAh, 可支持3小时观影或2小时游戏体验</p>
+<p>交互：Inside-Out 6DoF头部及双手柄定位追踪</p>
+<p>不废话了，就我的使用体验一句话概括：</p>
+<p>奇遇4K就是好<br>拿来看片爽爽爽<br>轻度游戏也还行<br>重度游戏请绕道</p>
+<p>（这测评够“微”吧，楽）</p>
+<hr>
+<h3 id="基础操作指南："><a href="#基础操作指南：" class="headerlink" title="基础操作指南："></a>基础操作指南：</h3><p>主要讲一下根本没人提到过的细节：</p>
+<p>先是硬件的问题<br>1.手柄追踪定位老是出问题怎么办？多晃手柄就对了，快速晃一晃就好了</p>
+<p>2.VR头显定位出问题怎么办？把头显摘下来，然后调整好你的位置后再带上就可以重置</p>
+<p>3.本人刚开始并不知道代替摇杆的那个触摸板可以按动</p>
+<p>然后是软件的问题<br>串流一些SteamVR时（例如 VR Chat）因为Q2的手柄没有摇杆，所以要在设置里找无摇杆但有触摸板的手柄的驱动</p>
+<hr>
+<blockquote>
+<p>在文章的最后，我要提醒一下要买Q2的人，这个好多人都容易忽视，就是：<br>Q2的手柄一共要用到4节7号电池，建议买四节可充电的7号电池<br>更新：Q2没有纱窗效应！！！（毕竟是4K）</p>
+</blockquote>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 とらえの小窝
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;胡傲魁（とらえ)
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Torae233/Torae233.github.io"
+    data-repo-id="R_kgDONRItTw"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONRItT84CklS9"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang=""
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>

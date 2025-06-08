@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>ハルカナソラ 悠之空 PC资源下载/游戏攻略 | とらえの小窝</title>
+    <meta name="author" content="胡傲魁（とらえ)" />
+    <meta name="description" content="一个热爱音乐，爱玩FPS和Galgame的无产阶级革命者" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/Tomoko.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/JMloading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>とらえの小窝</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;とらえの小窝</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>ハルカナソラ 悠之空 PC资源下载/游戏攻略</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/2/8
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                资源分享
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E3%83%8F%E3%83%AB%E3%82%AB%E3%83%8A%E3%82%BD%E3%83%A9/" style="color: #00a596">
+                    ハルカナソラ
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><img src="/images/YZK10.png" alt="图片" title="ハルカナソラ"></p>
+<span id="more"></span>
+<blockquote>
+<p>！！！还请不要过河拆桥，自己下载完就举报链接，这种行为是最可耻的！！！<br>Steam版跳票至二月末了，到时候和とらえ一起购买Steam正版补票吧<br><a target="_blank" rel="noopener" href="https://store.steampowered.com/app/3130110/Haruka_na_Sora/">Steam正版链接</a></p>
+</blockquote>
+<h3 id="游戏介绍"><a href="#游戏介绍" class="headerlink" title="游戏介绍"></a>游戏介绍</h3><p>春日野穹：在一起就够了……。</p>
+<p>「平安回来真是太好了」</p>
+<p>以泪眼婆娑的梢为首，瑛、奈緒、一葉、亮平等微笑出来迎接。</p>
+<p>「对不起」</p>
+<p>与悠一同下山的穹真诚地道歉，得到已知事实的奈緒体谅后，先行回到了住处。</p>
+<p>入浴后，品尝着穹烹饪的菜肴，二人终于平静下来。漫长的一天就到此结束吧。</p>
+<p>平淡无奇的日常，开始因意识对方的存在而改变，筋疲力尽的二人，却在被窝里久久不能入眠。</p>
+<p>「呐，悠……接下来怎么打算……？」<br>「之前说过，就在这里生活」<br>「悠这么想的话，我也这样就好了……」</p>
+<p>今天结束，明天也会是稍微不同的一天，但无论如何能相互确定的是，这样的生活会一直持续下去。</p>
+<p>有一天，两人收到一封信。<br>这封来自北欧的信，让二人迈出新的一步……。</p>
+<p>倉永梢：我，我是主角！</p>
+<p>担任班长的梢，是否由于身份的原因，尽管能够与男生闲言碎语或是交谈任务，但至今没有闲聊过，更别说分享秘密。</p>
+<p>因此，每当与悠和亮平搭话时，总是只能以事务性的理由开口。</p>
+<p>即使这样，悠总是温柔回应，慢慢地，梢开始在意起他来……。</p>
+<p>温柔活泼的前辈，小狗一般温驯可爱的同年。</p>
+<p>端庄秀丽・才色兼备的大小姐，洋溢着大人气息的女仆。</p>
+<p>更甚，与哥哥郎才女貌的孪生妹妹，眼看悠的争夺战龙争虎斗！</p>
+<p>尽管如此，梢仍然希望寻找理由与悠在相处……。</p>
+<p>此刻，班长的战斗正式开始……。</p>
+<p>伊福部八尋：……随便你。</p>
+<p>自从痛彻心扉的失恋后，八尋开始变成嫌麻烦的姐姐，不管是恋情，或是爱情，都相当心灰意懒。</p>
+<p>今天亦如同往常，把店内的值守与工作塞给瑛和悠，过着无所事事的生活。</p>
+<p>「呐，大姐头。悠主动帮忙，不会是喜欢你吧~？」</p>
+<p>初佳的无心之言，开始让八尋意识起悠的存在。</p>
+<p>一表人才，举止得体，吃苦耐劳的年轻小伙（小屁孩）。</p>
+<p>时常恶作剧取笑他，或是开玩笑诱惑他，享受他的反应……。</p>
+<p>只是，这并非本意。</p>
+<p>偶然间，时隔长年再次为情所困的八尋，是听从自己的内心，还是——</p>
+<p>Extra Scenario</p>
+<p>流金铄石的暑假。<br>因穹想买布丁，一同出门的春日野兄妹，发现超市大门紧闭。</p>
+<p>闷闷不乐的穹。<br>天气太热不想走路，快叫的士之类，如同往常撒娇使性的穹。这时，被准备前往卡拉OK的瑛和一葉一同邀请过去。</p>
+<p>稍微远离学校的某个卡拉OK唱厅。</p>
+<p>起初害羞的原因，众人一同持麦放声高歌，这时“单身卡拉OK惯犯”、渚家的女仆・初佳因弄错房号来到了这里。</p>
+<p>于是初佳亦一同加入，瞬间气氛高涨。</p>
+<p>初佳单身卡拉OK经验丰富，唱功自信，但穹与一葉等人亦不甘下风，热情洋溢，一时剑拔弩张！</p>
+<p>眼下将献唱历年主打歌（伴有舞蹈）……。<br><img src="/images/YZK11.png" alt="图片" title="ハルカナソラ"></p>
+<hr>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>城通网盘  提取码：0721<br><a target="_blank" rel="noopener" href="https://url31.ctfile.com/f/62611531-1454378125-43dce2?p=0721" title="网盘地址">点我下载</a></p>
+<hr>
+<h3 id="游戏攻略"><a href="#游戏攻略" class="headerlink" title="游戏攻略"></a>游戏攻略</h3><p>๑乛◡乛๑ ハルカナソラ 不需要游戏攻略！<br>短剧1~3分别对应倉永梢线，伊福部八尋线和春日野穹线补充<br>短剧4为OVA&#x2F;Extra<br>WEB内容剧场是7个小剧场<br>虽然我知道有些多此一举，但我还是要说：</p>
+<blockquote>
+<p>请在游玩ハルカナソラ前先游玩ヨスガノソラ！！！<br>ハルカナソラ本质上是ヨスガノソラ的续作，为确保您的游玩体验，在玩本作之前请先游玩前作！<br><a href="https://torae233.github.io/2025/02/07/%E3%83%A8%E3%82%B9%E3%82%AC%E3%83%8E%E3%82%BD%E3%83%A9-%E7%BC%98%E4%B9%8B%E7%A9%BA-%E7%BC%98%E5%88%86%E7%9A%84%E5%A4%A9%E7%A9%BA-PC%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD-%E6%B8%B8%E6%88%8F%E6%94%BB%E7%95%A5/">ヨスガノソラ 缘之空&#x2F;缘分的天空 PC资源下载&#x2F;游戏攻略 | とらえの小窝</a></p>
+</blockquote>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 とらえの小窝
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;胡傲魁（とらえ)
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Torae233/Torae233.github.io"
+    data-repo-id="R_kgDONRItTw"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONRItT84CklS9"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang=""
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>

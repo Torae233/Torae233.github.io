@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>VR Kanojo/VR女友/VRカノジョ VR游戏PC资源下载（适用于SteamVR） | とらえの小窝</title>
+    <meta name="author" content="胡傲魁（とらえ)" />
+    <meta name="description" content="一个热爱音乐，爱玩FPS和Galgame的无产阶级革命者" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/Tomoko.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/JMloading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>とらえの小窝</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;とらえの小窝</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>VR Kanojo/VR女友/VRカノジョ VR游戏PC资源下载（适用于SteamVR）</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/4/4
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                资源分享
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/VR%E3%82%AB%E3%83%8E%E3%82%B8%E3%83%A7/" style="color: #03a9f4">
+                    VRカノジョ
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><img src="/images/VRCNJ0.jpg" alt="图片" title="VR Kanojo"></p>
+<span id="more"></span>
+<blockquote>
+<p>！！！还请不要过河拆桥，自己下载完就举报链接，这种行为是最可耻的！！！<br>有个遗憾的消息，该游戏前不久刚被锁国区!!!∑(ﾟДﾟノ)ノ<br><a target="_blank" rel="noopener" href="https://store.steampowered.com/app/751440/VR_Kanojo__VR/">Steam正版链接</a></p>
+</blockquote>
+<div style="position: relative; width: 175%; height: 0; padding-bottom: 75%;">
+<iframe src="https://www.bilibili.com/video/BV1emZZYuEkX/?vd_source=0b67caafcee3a52a1f8e501a83f56216" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; Left: 0; top: 0;" ></iframe></div>
+
+<h3 id="游戏介绍"><a href="#游戏介绍" class="headerlink" title="游戏介绍"></a>游戏介绍</h3><h4 id="I社-VRカノジョ-VR女友-VR-Kanojo"><a href="#I社-VRカノジョ-VR女友-VR-Kanojo" class="headerlink" title="I社 VRカノジョ&#x2F;VR女友&#x2F;VR Kanojo"></a>I社 VRカノジョ&#x2F;VR女友&#x2F;VR Kanojo</h4><p><img src="/images/VRCNJ1.jpg" alt="图片" title="VR Kanojo"><br>This is Steam version.这是一款和白软萌邻家妹子互动玩耍的VR游戏。VR女友，快感出手！告别虚无缥缈的脑补，在VR世界中，你能体感到她的呼吸体温，还有两人之间脸红心跳的小距离。你可以为她穿上你喜欢的服装，通过VR控制器，还能“亲手”和她互动……快点去享受和夕阳樱的二人世界吧！<br><img src="/images/VRCNJ2.jpg" alt="图片" title="VR Kanojo"><br><strong>最低配置:</strong><br>需要 64 位处理器和操作系统<br>操作系统: Windows10 64bit<br>处理器: Intel Core i5 4590<br>内存: 4 GB RAM<br>显卡: NVIDIA GTX 970 or GTX 1060 or better&#x2F; AMD R9 290 or better<br>DirectX 版本: 11<br>存储空间: 需要 4 GB 可用空间</p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>123云盘  提取码：0721<br><a target="_blank" rel="noopener" href="https://www.123865.com/s/uvySVv-3cs43?%E6%8F%90%E5%8F%96%E7%A0%81:0721" title="网盘地址">点我下载</a><br>备用网盘地址：<a target="_blank" rel="noopener" href="https://www.123684.com/s/uvySVv-3cs43?%E6%8F%90%E5%8F%96%E7%A0%81:0721" title="备用网盘地址">点我下载</a> </p>
+<h3 id="使用教程"><a href="#使用教程" class="headerlink" title="使用教程"></a>使用教程</h3><p>首先解压游戏文件到你喜欢的地方<br>然后将游戏添加到Steam&#x2F;在Steam上添加非Steam游戏（B站教程一搜一大堆，关键词<strong>Steam添加非Steam游戏</strong>）</p>
+<p>启动SteamVR并link你的VR设备<br>然后通过Steam启动该游戏即可</p>
+<h3 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h3><p>とらえ因学业繁重无力持续更新运营该博客，故仅在法定节假日才会抽空更新<br>这篇博客算是开一个新坑，以后资源分享除了Galgame以外，还会新增与VR相关的内容<br>因とらえ入坑VR的原因，今后也会分享一些VR硬件知识（主要是<strong>奇遇2</strong>和<strong>Quest2</strong>的相关知识分享，本人只用过这两个VR一体机）</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 とらえの小窝
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;胡傲魁（とらえ)
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Torae233/Torae233.github.io"
+    data-repo-id="R_kgDONRItTw"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONRItT84CklS9"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang=""
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>
