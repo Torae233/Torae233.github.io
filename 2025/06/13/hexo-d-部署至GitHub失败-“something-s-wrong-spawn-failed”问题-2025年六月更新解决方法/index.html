@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>hexo d 部署至GitHub失败 “something&#39;s wrong/spawn failed”问题 2025年六月更新解决方法 | とらえの小窝</title>
+    <meta name="author" content="胡傲魁（とらえ)" />
+    <meta name="description" content="一个热爱音乐，爱玩FPS和Galgame的无产阶级革命者" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/Tomoko.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/JMloading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>とらえの小窝</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;とらえの小窝</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>hexo d 部署至GitHub失败 “something&#39;s wrong/spawn failed”问题 2025年六月更新解决方法</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/6/13
+        </span>
+        
+        <span class="category">
+            <a href="/categories/Blog/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                Blog
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/Hexo/" style="color: #ffa2c4">
+                    Hexo
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><img src="/images/HEXOD0.png" alt="图片" title="something&#39;s wrong/spawn failed"><br>图片来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_59039063/article/details/132459418">解决使用Hexo搭建个人博客遇到的一些问题_hexo d 连不上github-CSDN博客</a></p>
+<blockquote>
+<p>如果你在使用Hexo+GitHub做博客时遇到了这个问题！那么，有99%的概率不是你的问题！</p>
+</blockquote>
+<span id="more"></span>
+
+<div style="position: relative; width: 175%; height: 0; padding-bottom: 75%;">
+<iframe src="https://www.bilibili.com/video/BV162M6zQEfC/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=0b67caafcee3a52a1f8e501a83f56216" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; height: 100%; Left: 0; top: 0;" ></iframe></div>
+
+<p>你在更新发布博客文章时使用 <strong>hexo clean + hexo g + hexo d</strong> 时，最后<strong>hexo d</strong>部署至GitHub是不是会出现这个报错：</p>
+<pre><code>FATAL Something’s wrong. Maybe you can find the solution here:https://hexo.io/docs/troubleshooting.html
+Error: Spawn failed
+at ChildProcess. (C:\blog\myblog\node_modules\hexo-util\lib\spawn.js:51:21)
+at ChildProcess.emit (events.js:314:20)
+at ChildProcess.cp.emit (C:\blog\myblog\node_modules\cross-spawn\lib\enoent.js:34:29)
+at Process.ChildProcess._handle.onexit (internal/child_process.js:276:12)
+</code></pre>
+<hr>
+<blockquote>
+<p>！！！注意！！！<br>这大概率不是你的问题！这是GitHub服务器连接的问题！</p>
+</blockquote>
+<p>众所周知GitHub在大陆不使用VPN，直连的话 <a target="_blank" rel="noopener" href="https://github.com/">https://github.com/</a> 官网有可能打不开，能不能打开全凭运气，通常会使用VPN来加速访问GitHub</p>
+<p>你在浏览器无法打开GitHub官网时， <strong>hexo d</strong> 部署至GitHub时大概率会出现“something’s wrong&#x2F;spawn failed”这个报错，这是因为无法连接至GitHub的服务器</p>
+<p><strong>解决方法：</strong></p>
+<ol>
+<li>等待片刻后尝试再次在浏览器打开GitHub的官网，若能打开便可以 <strong>hexo d</strong> 部署至GitHub，此时大概率会成功</li>
+<li>挂<strong>靠谱的</strong>VPN！（很多VPN都不管用！机场还有Steam++就是Watt Toolkit的GitHub&#x2F;github.io专项加速也不行！とらえ只试过ProtonVPN可以）只要是靠谱的VPN，能够在浏览器打开GitHub官网便可以<strong>hexo d</strong> 部署至GitHub</li>
+</ol>
+<p><strong>！！！注意！！！</strong><br>如果VPN不行的话！请关掉它！裸连效果是最好的！只要能在浏览器打开GitHub官网就大概率能够 <strong>hexo d</strong> 部署至GitHub</p>
+<p><strong>如果没有使用任何可以加速GitHub的工具（包括VPN&#x2F;机场&#x2F;专项加速器）并且浏览器可以正常访问GitHub官网，此时仍旧 hexo d 部署至GitHub出现“something’s wrong&#x2F;spawn failed”这个报错，那么这道题就无解了，因为这不是你的问题！这是GitHub的问题，唯一的解决方法就是等几天（とらえ等了整整一个星期）它自己就好了</strong></p>
+<p>以上内容是とらえ画了近十个小时上网查找相关问题的解决方法以及亲身经历总结出来的，如有问题还请指正</p>
+<blockquote>
+<p>参考文献：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_59039063/article/details/132459418">解决使用Hexo搭建个人博客遇到的一些问题_hexo d 连不上github-CSDN博客</a><br><a target="_blank" rel="noopener" href="https://wenku.csdn.net/answer/6vcvg6hbka?ops_request_misc=%257B%2522request%255Fid%2522%253A%25229574825b053e8c892b6e9b4f381ece27%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=9574825b053e8c892b6e9b4f381ece27&biz_id=&utm_medium=distribute.pc_search_result.none-task-chatgpt-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-6vcvg6hbka-null-null.142%5Ev102%5Epc_search_result_base6&utm_term=FATAL%20Something%20s%20wrong.%20Maybe%20you%20can%20find%20the%20solution%20here:%20https://hexo.io/docs/troubleshooting.html%20Error:%20Spawn%20failed%20%20%20%20%20at%20ChildProcess.%3Canonymous%3E%20(C:%5Cblog%5Cmyblog%5Cnode_modules%5Chexo-deployer-&spm=1018.2226.3001.4187">FATAL Something’s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html Error: Spawn failed - CSDN文库</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zheng_cs/article/details/117109710?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522f21aa039ac45739e63a0d59c36ebf3f8%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fcommercial.%2522%257D&request_id=f21aa039ac45739e63a0d59c36ebf3f8&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~insert_commercial~default-2-117109710-null-null.142%5Ev102%5Epc_search_result_base6&utm_term=FATAL%20Something%20s%20wrong.%20Maybe%20you%20can%20find%20the%20solution%20here:%20https://hexo.io/docs/troubleshooting.html%20Error:%20Spawn%20failed%20%20%20%20%20at%20ChildProcess.%3Canonymous%3E%20(C:%5Cblog%5Cmyblog%5Cnode_modules%5Chexo-deployer-&spm=1018.2226.3001.4187">Hexo-d 报错 fatal: unable to access ‘https://github.com/xx/xx.github.io/‘_hexo fatal: unable to access-CSDN博客</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45350329/article/details/130692142?ops_request_misc=&request_id=&biz_id=102&utm_term=FATAL%20Something%20s%20wrong.%20Maybe&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-0-130692142.142%5Ev102%5Epc_search_result_base6&spm=1018.2226.3001.4187">hexo d命令报错，FATAL Something‘s wrong. Maybe you can find the solution here_hexo d 报错-CSDN博客</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/abccbatqw/article/details/136662154?ops_request_misc=&request_id=&biz_id=102&utm_term=FATAL%20Something%20s%20wrong.%20Maybe&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-1-136662154.142%5Ev102%5Epc_search_result_base6&spm=1018.2226.3001.4187">FATAL Something‘s wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting._ing stream fatal something’s wrong. maybe you can -CSDN博客</a><br><a target="_blank" rel="noopener" href="https://wenku.csdn.net/answer/c6824ffeb5d54f94821b03f4076b674e?ops_request_misc=%257B%2522request%255Fid%2522%253A%25229574825b053e8c892b6e9b4f381ece27%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=9574825b053e8c892b6e9b4f381ece27&biz_id=&utm_medium=distribute.pc_search_result.none-task-chatgpt-2~all~first_rank_ecpm_v1~rank_v31_ecpm-3-c6824ffeb5d54f94821b03f4076b674e-null-null.142%5Ev102%5Epc_search_result_base6&utm_term=FATAL%20Something%20s%20wrong.%20Maybe%20you%20can%20find%20the%20solution%20here:%20https://hexo.io/docs/troubleshooting.html%20Error:%20Spawn%20failed%20%20%20%20%20at%20ChildProcess.%3Canonymous%3E%20(C:%5Cblog%5Cmyblog%5Cnode_modules%5Chexo-deployer-&spm=1018.2226.3001.4187">FATAL Something’s wrong. Maybe you can find the solution here: https://hexo.io/docs/troublesho oting.html Error: Spawn failed at ChildProcess.<anonymous> (D:\myblog\cheng\node_modules\hexo-util\lib\spawn.js:51:21) at ChildProcess.emit (node:events:513:28) at cp.emit (D:\myblog\cheng\node_modules\cross-spawn\lib\enoent.js:34:29) at ChildProcess._handle.onexit (node:internal&#x2F;child_process:291:12) - CSDN文库</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/619765036">搭建hexo博客时出现spawn failed怎么解决? - 知乎</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cairbin/p/14957855.html">解决hexo报错spwan failed - CairBin - 博客园</a><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1489231">hexo部署(hexo d)报错 FATAL { err: Error: Spawn failed-阿里云开发者社区</a><br><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/troubleshooting">故障排除 | Hexo</a><br><a target="_blank" rel="noopener" href="https://sky-jiangcheng.github.io/2023/06/14/hexo-deploy-fix/">解决一个Hexo deploy报错问题 | Hexo</a></p>
+</blockquote>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 とらえの小窝
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;胡傲魁（とらえ)
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Torae233/Torae233.github.io"
+    data-repo-id="R_kgDONRItTw"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONRItT84CklS9"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang=""
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>
