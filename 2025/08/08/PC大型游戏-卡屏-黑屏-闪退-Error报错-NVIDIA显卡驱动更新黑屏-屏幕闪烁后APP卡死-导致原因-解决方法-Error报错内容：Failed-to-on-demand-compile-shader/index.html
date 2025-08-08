@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>PC大型游戏 卡屏/黑屏/闪退/Error报错 NVIDIA显卡驱动更新黑屏/屏幕闪烁后APP卡死 导致原因/解决方法(Error报错内容：Failed to on-demand compile shader) | とらえの小窝</title>
+    <meta name="author" content="胡傲魁（とらえ)" />
+    <meta name="description" content="一个热爱音乐，爱玩FPS和Galgame的无产阶级革命者" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/Tomoko.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/JMloading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>とらえの小窝</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;とらえの小窝</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>PC大型游戏 卡屏/黑屏/闪退/Error报错 NVIDIA显卡驱动更新黑屏/屏幕闪烁后APP卡死 导致原因/解决方法(Error报错内容：Failed to on-demand compile shader)</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2025/8/8
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E6%B8%B8%E6%88%8F%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                游戏知识分享
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/%E6%B8%B8%E6%88%8F%E5%8D%A1%E5%B1%8F-%E9%BB%91%E5%B1%8F-%E9%97%AA%E9%80%80-Error%E6%8A%A5%E9%94%99/" style="color: #ff7d73">
+                    游戏卡屏/黑屏/闪退/Error报错
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><img src="/images/PCKHS0.png" alt="图片" title="Error报错"></p>
+<span id="more"></span>
+<p>  Failed to on-demand compile shader</p>
+<blockquote>
+<p>前言：本文章适用于你已在互联网（主要是在B站）查询过相关问题解决方法并多次尝试无果后作为参考（解决方法不包括重装系统，因为重装系统一定可以解决该问题）</p>
+</blockquote>
+<p>该文章的B站视频：</p>
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114992464597067&bvid=BV1yXtmz8E24&cid=31566202687&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>                                                                                                                                                                                                                                                                                                                                                     
+
+<h2 id="1-对症下药（问题详情）"><a href="#1-对症下药（问题详情）" class="headerlink" title="1.对症下药（问题详情）"></a>1.对症下药（问题详情）</h2><p>在解决问题之前请先确认你遇到的是否为以下问题：</p>
+<blockquote>
+<p>Win11&#x2F;10系统下，打开大型游戏（包括SteamVR），有时可以正常游玩，有时突然出现“卡屏&#x2F;黑屏&#x2F;闪退”这三种问题的其一或其二或全部同时出现（即先卡屏，然后黑屏，接着游戏闪退）可能出现上述Error报错：Failed to on-demand compile shader<br>在NVIDIA显卡APP更新驱动过程中黑屏&#x2F;屏幕闪烁（驱动安装的正常现象）之后APP卡死，只能通过任务管理器强行结束APP任务进程</p>
+</blockquote>
+<blockquote>
+<p>前提条件：1.电脑使用一切正常，游戏卡屏&#x2F;黑屏过程中可以Win+D等方式退回桌面并正常使用电脑（比如退回桌面后通过管理器强行结束游戏任务进程）<br>2.电脑软硬件一切正常，电脑跑分工具稳定性&#x2F;压力测试正常通过，烤机半小时以上正常通过（双烤FPU+甜甜圈）</p>
+</blockquote>
+<h2 id="2-不废话-省流-解决方法"><a href="#2-不废话-省流-解决方法" class="headerlink" title="2.不废话 省流 解决方法"></a>2.不废话 省流 解决方法</h2><h3 id="请关闭显卡超频！！！"><a href="#请关闭显卡超频！！！" class="headerlink" title="请关闭显卡超频！！！"></a>请关闭显卡超频！！！</h3><h4 id="造成上述所有问题的罪魁祸首就是显卡超频！！！"><a href="#造成上述所有问题的罪魁祸首就是显卡超频！！！" class="headerlink" title="造成上述所有问题的罪魁祸首就是显卡超频！！！"></a>造成上述所有问题的罪魁祸首就是显卡超频！！！</h4><h3 id="显卡超频后稳定性测试-压力测试-甜甜圈烤机-能过，不代表能玩游戏！！！"><a href="#显卡超频后稳定性测试-压力测试-甜甜圈烤机-能过，不代表能玩游戏！！！" class="headerlink" title="显卡超频后稳定性测试&#x2F;压力测试&#x2F;甜甜圈烤机 能过，不代表能玩游戏！！！"></a>显卡超频后稳定性测试&#x2F;压力测试&#x2F;甜甜圈烤机 能过，不代表能玩游戏！！！</h3><h4 id="关闭微星小飞机显卡超频需要将超频参数调零并勾选！直接关闭APP无效！"><a href="#关闭微星小飞机显卡超频需要将超频参数调零并勾选！直接关闭APP无效！" class="headerlink" title="关闭微星小飞机显卡超频需要将超频参数调零并勾选！直接关闭APP无效！"></a>关闭微星小飞机显卡超频需要将超频参数调零并勾选！直接关闭APP无效！</h4><p><img src="/images/PCKHS1.png" alt="图片" title="微星小飞机"></p>
+<hr>
+<blockquote>
+<p>若仍旧无法解决问题可以参考以下内容，或许对你有所帮助</p>
+</blockquote>
+<h2 id="3-とらえの个人经历（发现并解决该问题的来龙去脉）"><a href="#3-とらえの个人经历（发现并解决该问题的来龙去脉）" class="headerlink" title="3.とらえの个人经历（发现并解决该问题的来龙去脉）"></a>3.とらえの个人经历（发现并解决该问题的来龙去脉）</h2><p>虽然とらえ是于写这篇文章的一周之前发现并解决的该问题，但这个问题更早之前就遇到了，只是之前仅仅是偶尔并不严重，一周之前该问题突然严重，とらえ通宵了一整夜解决该问题。</p>
+<p>最初这种问题只是出现在VR游戏（SteamVR）当中，偶尔会出现VR一体机（Oculus Meta Quest 2）使用Steam Link串流SteamVR时卡屏以及闪退，节奏光剑这种小游戏还能玩一会儿才卡屏，而Contractors Showdown这种大型游戏就会直接闪退，在卡屏过程中可以正常使用Steam菜单，可以正常在SteamVR中监控电脑桌面</p>
+<p>直到一周前的那天晚上（2025&#x2F;7&#x2F;30），とらえ准备玩一会儿VR，结果频繁卡屏&#x2F;黑屏&#x2F;闪退，在尝试重启VR一体机以及电脑无果后放弃玩VR（曾经多次通过重启这种方式解决过该问题）<br>然后とらえ就去打CS，结果CS也出现了卡屏的问题！此时とらえ才终于意识到了事情的严重性，开始寻找问题并解决它</p>
+<p>とらえ首先认为是超频导致的，因为曾经的错误超频导致无法游戏的经历，使得とらえ第一锁定了显卡超频，使用的是微星小飞机对显卡进行超频（超频数值是我曾经一点点尝试调出的最佳状态，显存频率不动，GPU频率+200，3058在3DMark Time Spy中从6000多分跑到了7000分，并且甜甜圈烤机半小时完美通过，也正常游戏了很长时间）（とらえ很清楚3050就算超到冒烟也还是3050，只是对于搞机的执着追求，不超白不超，反正电脑正常使用了那么长时间没有一点问题）とらえ最唐的地方来了：<strong>认为仅仅关掉微星小飞机APP就关掉了超频！</strong><br>在关闭微星小飞机后尝试游戏 CS+地平线4 再次黑屏&#x2F;卡屏&#x2F;闪退 ，とらえ就首先排除了显卡问题（南蚌</p>
+<p>之后就开始对电脑的其余硬件逐个排查：<br>1.关闭CPU定压定频<br>2.关闭内存XMP（众所周知铭瑄的丐中丐板B450M挑战者对于内存XMP有问题，说白了还是供电太拉，所以就先怀疑了是内存的问题，后来准备更新主板BIOS在铭瑄官网发现了早在09&#x2F;20&#x2F;2023的更新中就已经优化了内存XMP性能，也就是说23年十月份之后批次的板子就几乎不存在D4-3200-C16内存XMP问题了）</p>
+<blockquote>
+<p>如果你的主板开XMP有问题的话就关闭XMP，或者再对内存进行降频（富哥你就换主板）</p>
+</blockquote>
+<p>3.恢复主板默认设置（就是上面1&#x2F;2的进阶操作）<br>4.更新主板BIOS（我的主板BIOS已经够新了，不认为最新的BIOS版本对内存进行优化能够解决问题）<br>5.使用工具或Windows自带的内存诊断工具进行内存诊断，彻底排除内存问题<br>6.使用硬盘测试工具测试硬盘，排除硬盘问题<br>（到这里就可以排除电脑主要硬件问题了，最后我怀疑到了主板上，都开始在网上找新的可超频非丐板了，六七百块的主板都加进购物车了）<br>7.更新显卡驱动，然后就发现了通过<strong>NVIDIA App</strong>显卡驱动更新黑屏&#x2F;屏幕闪烁后APP卡死。之后发现从官网下载新驱动文件进行更新就一切正常（好像是因为这种更新方式不会黑屏&#x2F;屏幕闪烁）<br>8.（虽然已经凌晨了，但还是不愿放弃，继续上网找相关问题的视频&#x2F;文章）对虚拟内存进行优化（这个有经验，之前为了玩塔科夫把虚拟内存拉到了25个G，塔科夫这游戏16G RAM只是入门，16G以上才行，尼基塔的神人优化导致这游戏巨吃内存）</p>
+<blockquote>
+<p>上网查找相关问题总结出：虚拟内存可以稍微高点，但绝不能太少，也不可以高的离谱，虚拟内存过小问题最多，非游戏需求（点名逃离塔科夫），默认设置不手动调整最好</p>
+</blockquote>
+<p>9.（时间凌晨4点）终于在网上看到了 <strong>显卡超频后甜甜圈烤机能过不代表能玩游戏</strong>相关内容，遂关闭微星小飞机的开机自启动后重启电脑，之后就游戏测试《极限竞速：地平线 4》正常玩了半个小时未出现任何问题！（就这样歪打正着的解决了问题）</p>
+<p>从晚上10点到凌晨5点，终于可以睡觉了(#｀皿´)</p>
+<p>第二天睡醒后再次打开微星小飞机进行超频后打开CS再次黑屏&#x2F;卡屏&#x2F;闪退，之后就出现了这个最关键的Error报错：Failed to on-demand compile shader（之前确实没见过这个报错）把这个报错丢给ChatGPT总结，在罗列出的结论中最关键的信息出现了：<strong>请关闭显卡超频！</strong></p>
+<h4 id="So，关闭微星小飞机显卡超频需要将超频参数调零并勾选，直接关闭APP无效。网上几乎没人说这个（泪目了）-╥╯-╰╥"><a href="#So，关闭微星小飞机显卡超频需要将超频参数调零并勾选，直接关闭APP无效。网上几乎没人说这个（泪目了）-╥╯-╰╥" class="headerlink" title="So，关闭微星小飞机显卡超频需要将超频参数调零并勾选，直接关闭APP无效。网上几乎没人说这个（泪目了）(╥╯^╰╥)"></a>So，关闭微星小飞机显卡超频需要将超频参数调零并勾选，直接关闭APP无效。网上几乎没人说这个（泪目了）(╥╯^╰╥)</h4><p>经过とらえ的多次测试结果就表明了：</p>
+<blockquote>
+<p>显卡超频后稳定性测试&#x2F;压力测试&#x2F;甜甜圈烤机 能过，不代表能玩游戏！<br>关闭微星小飞机显卡超频需要将超频参数调零并勾选！直接关闭APP无效！</p>
+</blockquote>
+<p>所以以后不能再超频显卡以提高游戏帧数了（悲T^T）显卡超频也就只能提高一下跑分好装一下杯了o(╥﹏╥)o<br>算了，3050超冒烟也还是3050，游戏帧数提高微乎其微，也就像C4D渲染一些比较大的工程，就那种一渲染一下午的，超频后能快个半小时ヽ(ー_ー)ノ</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><p>除了上面的解决方法以外，就是：</p>
+<h4 id="1-如果你的主板是丐中丐板，内存XMP有问题的话，就请关掉内存XMP，或再对内存进行降频，当然富哥也可以直接换主板（虽然富哥不可能用丐板就是了）"><a href="#1-如果你的主板是丐中丐板，内存XMP有问题的话，就请关掉内存XMP，或再对内存进行降频，当然富哥也可以直接换主板（虽然富哥不可能用丐板就是了）" class="headerlink" title="1.如果你的主板是丐中丐板，内存XMP有问题的话，就请关掉内存XMP，或再对内存进行降频，当然富哥也可以直接换主板（虽然富哥不可能用丐板就是了）"></a>1.如果你的主板是丐中丐板，内存XMP有问题的话，就请关掉内存XMP，或再对内存进行降频，当然富哥也可以直接换主板（虽然富哥不可能用丐板就是了）</h4><h4 id="2-非特定游戏需求，尽量不要动虚拟内存（内存真不够了就加钱扩容）"><a href="#2-非特定游戏需求，尽量不要动虚拟内存（内存真不够了就加钱扩容）" class="headerlink" title="2.非特定游戏需求，尽量不要动虚拟内存（内存真不够了就加钱扩容）"></a>2.非特定游戏需求，尽量不要动虚拟内存（内存真不够了就加钱扩容）</h4><h4 id="3-若只有部分游戏会出现上述问题，也有可能是游戏本身的优化问题（主要体现在笔记本-锁驱动显卡-老设备）（点名CS刚从GO更新到2时，那神人优化依托答辩，卡屏这种事简直家常便饭）"><a href="#3-若只有部分游戏会出现上述问题，也有可能是游戏本身的优化问题（主要体现在笔记本-锁驱动显卡-老设备）（点名CS刚从GO更新到2时，那神人优化依托答辩，卡屏这种事简直家常便饭）" class="headerlink" title="3.若只有部分游戏会出现上述问题，也有可能是游戏本身的优化问题（主要体现在笔记本&#x2F;锁驱动显卡&#x2F;老设备）（点名CS刚从GO更新到2时，那神人优化依托答辩，卡屏这种事简直家常便饭）"></a>3.若只有部分游戏会出现上述问题，也有可能是游戏本身的优化问题（主要体现在笔记本&#x2F;锁驱动显卡&#x2F;老设备）（点名CS刚从GO更新到2时，那神人优化依托答辩，卡屏这种事简直家常便饭）</h4><h4 id="4-只有卡屏或黑屏的话，可以尝试Ctrl-Shift-Win-B快捷键重启显卡驱动"><a href="#4-只有卡屏或黑屏的话，可以尝试Ctrl-Shift-Win-B快捷键重启显卡驱动" class="headerlink" title="4.只有卡屏或黑屏的话，可以尝试Ctrl+Shift+Win+B快捷键重启显卡驱动"></a>4.只有卡屏或黑屏的话，可以尝试Ctrl+Shift+Win+B快捷键重启显卡驱动</h4>
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 とらえの小窝
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;胡傲魁（とらえ)
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Torae233/Torae233.github.io"
+    data-repo-id="R_kgDONRItTw"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONRItT84CklS9"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang=""
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>
