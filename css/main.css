@@ -353,7 +353,7 @@
 }
 #loading-circle {
     align-items: center;
-    border: 10px solid #FF1493;
+    border: 10px solid #FFB6C1;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
