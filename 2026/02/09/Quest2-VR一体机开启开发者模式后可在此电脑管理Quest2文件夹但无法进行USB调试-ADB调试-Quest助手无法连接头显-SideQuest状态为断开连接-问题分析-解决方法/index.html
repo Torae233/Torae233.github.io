@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>Quest2 VR一体机开启开发者模式后可在此电脑管理Quest2文件夹但无法进行USB调试/ADB调试/Quest助手无法连接头显/SideQuest状态为断开连接 -问题分析+解决方法 | とらえの小窝</title>
+    <meta name="author" content="胡傲魁（とらえ)" />
+    <meta name="description" content="一位 ACGN亚文化/数码硬件 爱好者，一个坚定拥护 马列毛主义 的高中生" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/Tomoko.jpg" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/NeneLoading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>とらえの小窝</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;とらえの小窝</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>Quest2 VR一体机开启开发者模式后可在此电脑管理Quest2文件夹但无法进行USB调试/ADB调试/Quest助手无法连接头显/SideQuest状态为断开连接 -问题分析+解决方法</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2026/2/9
+        </span>
+        
+        <span class="category">
+            <a href="/categories/VR%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                VR知识分享
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/Oculus-Meta-Quest2/" style="color: #00a596">
+                    Oculus Meta Quest2
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><img src="/images/Quest2-0.jpg" alt="图片" title="Quest助手无法连接头显/SideQuest状态为断开连接"></p>
+<span id="more"></span>
+<p>B站视频教学（视频开头有省流，比看文章方便，但更详细的还在文章）：</p>
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=116041191592251&bvid=BV1HacuzjEzF&cid=35941516391&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+<blockquote>
+<p>前情提要：本文仅为Oculus Meta Quest2 VR一体机开启开发者模式后无法进行USB&#x2F;无线 ADB调试相关问题，とらえ没用过Quest3&#x2F;S&#x2F;Pro ，仅供参考*<br>能够找到这篇文章则说明你已达成所有前提步骤，所以关于如何开启开发者模式等问题本文不再赘述（自行找教程，B站视频教程一搜一大把）</p>
+</blockquote>
+<p>如果你遇到的是上图的情况，那么首先</p>
+<h3 id="确诊问题，对号入座"><a href="#确诊问题，对号入座" class="headerlink" title="确诊问题，对号入座"></a>确诊问题，对号入座</h3><p><strong>请确认你遇到的问题</strong>是否为上图的情况&#x2F;你已进行了基础问题排查</p>
+<p>主要症状为：（同时满足以下条件）</p>
+<ol>
+<li>Quest2头显已正常开启开发者模式</li>
+<li>头显与电脑正常连接（物理&#x2F;硬件+软件）（确定为数据线+USB3.0接口）</li>
+<li>可在<strong>此电脑</strong>管理一体机的文件夹</li>
+<li>无法进行USB调试&#x2F;ADB调试（比如Quest助手&#x2F;SideQuest状态为断开连接 ……等）</li>
+</ol>
+<p>（参考上图）</p>
+<hr>
+<h3 id="问题分析-解决方法"><a href="#问题分析-解决方法" class="headerlink" title="问题分析+解决方法"></a>问题分析+解决方法</h3><p>如果你确定为该问题，那么：<br>造成该问题的原因只有一个！那就是<br><strong>Quest2最新版本所更新的最新政策！限制了ADB调试！</strong></p>
+<p>那么该如何解决？</p>
+<blockquote>
+<p>很简单——使用Quest官方串流工具<strong>Meta Horizon Link</strong>进行一次串流即可解决！</p>
+</blockquote>
+<p>（以下内容为个人见解，需更详细的去看别人的博客&#x2F;视频&#x2F;文章）<br>接下来就是如何使用Quest官方串流工具</p>
+<ol>
+<li>准备工作-中国大陆地区需网络代理（VPN&#x2F;机场&#x2F;加速器等）（相信能看到此博客你便解决了这一问题）</li>
+<li>下载安装Meta Horizon Link（Quest官方的，所以一体机自带，仅需电脑上的）<br>  官网：<a target="_blank" rel="noopener" href="https://www.meta.com/zh-cn/help/quest/1517439565442928/">Getting started with Meta Horizon Link App | Meta 帮助中心 | Meta 商店</a><br>  （没必要懒人网盘资源，后面照样需要网络代理）</li>
+<li>登录你的Meta账号+通过数据线串流你的VR一体机……</li>
+</ol>
+<p>没了，具体的自己研究（这肯定难不倒已经开启了开发者模式的你，所以详细的不做赘述）<br>可以参考：<a target="_blank" rel="noopener" href="https://www.bilibili.com/opus/1045961095106265108">meta quest link有线串流常见问题及解决方案 - 哔哩哔哩</a></p>
+<hr>
+<p>在串流一次过后，重新进行USB调试&#x2F;ADB调试，比如Quest助手&#x2F;SideQuest，你就会发现可以重新连接上了！（如下图）<br><img src="/images/Quest2-1.jpg" alt="图片" title="Quest助手已连接/SideQuest状态为已连接"></p>
+<p>无参考文献（とらえ在2025年十月遇到并着手解决该问题时意外在某个B站视频的评论区里看到有人说这个解决方法，尝试后成功解决，鸽了很久才写了这篇文章）</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2026 とらえの小窝
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;胡傲魁（とらえ)
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Torae233/Torae233.github.io"
+    data-repo-id="R_kgDONRItTw"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONRItT84CklS9"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang=""
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>
