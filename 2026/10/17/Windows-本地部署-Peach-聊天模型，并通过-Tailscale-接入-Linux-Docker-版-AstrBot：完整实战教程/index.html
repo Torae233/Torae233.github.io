@@ -184,7 +184,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/AI/" style="color: #00bcd4">
+                <a href="/tags/AI/" style="color: #00a596">
                     AI
                 </a>
             </span>
@@ -206,8 +206,52 @@
 <p><strong>请注意：文中的 Tailscale IP 均使用占位符，执行前必须替换成自己设备的实际地址。不要把 Ollama 的 11434 端口公开到互联网。</strong></p>
 </blockquote>
 <h2 id="1-最终效果与架构"><a href="#1-最终效果与架构" class="headerlink" title="1. 最终效果与架构"></a>1. 最终效果与架构</h2><p>本方案不是把模型部署到云服务器，而是让 Windows 本地电脑负责推理，云服务器继续运行机器人和消息平台适配器。AstrBot 通过兼容 OpenAI 格式的 HTTP API 请求本地 Ollama。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">    U[QQ 私聊] --&gt; NC[Napcat Docker 容器]</span><br><span class="line">    NC --&gt; AB[AstrBot Docker 容器]</span><br><span class="line">    AB --&gt;|HTTP API：11434/v1| TS[Tailscale 私有网络]</span><br><span class="line">    TS --&gt; OL[Windows 11 · Ollama]</span><br><span class="line">    OL --&gt; GPU[Peach-Framboise GGUF 模型]</span><br><span class="line">    GPU --&gt; VRAM[RTX 3060 8GB]</span><br></pre></td></tr></table></figure>
-
+<p><strong>消息与推理链路：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="right">顺序</th>
+<th>组件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>QQ 私聊</td>
+<td>用户发送消息</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>Napcat（Docker 容器）</td>
+<td>接收并转发 QQ 消息</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>AstrBot（Docker 容器）</td>
+<td>处理消息、人格与上下文</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>Tailscale 私有网络</td>
+<td>安全连接云服务器与本地电脑</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>Windows 11 上的 Ollama</td>
+<td>通过 HTTP API 提供模型服务</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>Peach-Framboise GGUF 模型</td>
+<td>执行本地文本推理</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>RTX 3060 8GB</td>
+<td>承担主要 GPU 推理工作</td>
+</tr>
+</tbody></table>
+<p><strong>请求方向：</strong> QQ 私聊 → Napcat → AstrBot → Tailscale → Windows Ollama → Peach-Framboise → 生成回复后沿原链路返回 QQ。</p>
 <p><strong>链路说明：</strong></p>
 <ul>
 <li>Windows 本机安装 Ollama，并使用 NVIDIA 显卡运行量化后的 Peach 模型。</li>

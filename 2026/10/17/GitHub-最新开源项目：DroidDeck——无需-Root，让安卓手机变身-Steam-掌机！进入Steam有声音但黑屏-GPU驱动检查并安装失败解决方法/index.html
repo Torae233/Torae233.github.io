@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <title>GitHub 最新开源项目：DroidDeck——无需 Root，让安卓手机变身 Steam 掌机！进入Steam有声音但黑屏/GPU驱动检查并安装失败解决方法 | とらえの小窝</title>
+    <meta name="author" content="胡傲魁（とらえ)" />
+    <meta name="description" content="一位 ACGN亚文化/数码硬件 爱好者，一个坚定拥护 马列毛主义 的高中生" />
+    <meta name="keywords" content="" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link rel="icon" href="/images/Torae0003-3.png" />
+    <link rel="preconnect" href="https://s4.zstatic.net" />
+<script src="https://s4.zstatic.net/ajax/libs/vue/3.3.7/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.cn" />
+<link rel="preconnect" href="https://fonts.gstatic.cn" crossorigin />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.cn/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+/>
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.alicdn.com/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://s4.zstatic.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://s4.zstatic.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body>
+    <div id="layout">
+        <transition name="fade">
+            <div id="loading" v-show="loading">
+                <div id="loading-circle">
+                    <h2>LOADING</h2>
+                    <p>加载过慢请开启缓存 浏览器默认开启</p>
+                    <img src="/images/ToraeLoading.gif" />
+                </div>
+            </div>
+        </transition>
+        <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>とらえの小窝</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;とらえの小窝</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+        <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+            <div class="article">
+    <div>
+        <h1>GitHub 最新开源项目：DroidDeck——无需 Root，让安卓手机变身 Steam 掌机！进入Steam有声音但黑屏/GPU驱动检查并安装失败解决方法</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2026/10/17
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E6%B8%B8%E6%88%8F%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                游戏知识分享
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/DroidDeck/" style="color: #03a9f4">
+                    DroidDeck
+                </a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="GitHub-最新开源项目：DroidDeck——无需-Root，让安卓手机变身-Steam-掌机！进入Steam有声音但黑屏-GPU驱动检查并安装失败解决方法"><a href="#GitHub-最新开源项目：DroidDeck——无需-Root，让安卓手机变身-Steam-掌机！进入Steam有声音但黑屏-GPU驱动检查并安装失败解决方法" class="headerlink" title="GitHub 最新开源项目：DroidDeck——无需 Root，让安卓手机变身 Steam 掌机！进入Steam有声音但黑屏&#x2F;GPU驱动检查并安装失败解决方法"></a>GitHub 最新开源项目：DroidDeck——无需 Root，让安卓手机变身 Steam 掌机！进入Steam有声音但黑屏&#x2F;GPU驱动检查并安装失败解决方法</h1><p><img src="/images/DroidDeck01.png" alt="图片" title="DroidDeck">  </p>
+<span id="more"></span>
+
+<blockquote>
+<p>先解决问题：<br><img src="/images/DroidDeck02.jpg" alt="图片" title="DroidDeck自动打GPU驱动失败"><br>如图，因DroidDeck已达到GitHub的请求频率限制，所以导致自动打GPU驱动失败，能够进入Steam有声音但黑屏<br>解决办法为手动打驱动：<br><img src="/images/DroidDeck03.jpg" alt="图片" title="DroidDeck手动打驱动">  </p>
+</blockquote>
+<h2 id="一、项目简介"><a href="#一、项目简介" class="headerlink" title="一、项目简介"></a>一、项目简介</h2><p><a target="_blank" rel="noopener" href="https://github.com/Droid-Deck/DroidDeck"><strong>DroidDeck</strong></a> 是一个试图将 SteamOS 式游戏体验带到 Android 设备上的开源项目。</p>
+<p>无需 Root，通过 Linux 运行环境、Steam 客户端、Proton 等兼容性组件，它就能让符合条件的安卓手机运行部分 PC 游戏。与云游戏不同，这套方案主打本地运行，不需要把游戏画面交给远端电脑处理。</p>
+<p>其实，类似的想法早就有人提出过，只不过直到最近，才终于有大佬们联合起来，把这套方案逐步做成了真正可以上手体验的项目（蚌）。</p>
+<p>严格来说，DroidDeck 并不是把 SteamOS 原封不动地装进 Android，而是在手机上搭建 Linux 游戏运行环境，尽可能复现类似 Steam Deck 的使用体验。</p>
+<p>截至 2026 年 10 月 17 日，项目最新正式版本为 <strong>0.4.0</strong>，刚刚加入多游戏平台整合和 KDE Plasma 桌面环境等功能，仍处于快速迭代阶段。</p>
+<h2 id="二、作用及意义"><a href="#二、作用及意义" class="headerlink" title="二、作用及意义"></a>二、作用及意义</h2><p>DroidDeck 最有意思的地方，是它让安卓手机有机会直接运行 Steam 库中的部分 PC 游戏。</p>
+<p>过去，想在手机上玩电脑游戏，通常要么依靠云游戏，要么等待开发者进行原生移植。现在，通过处理器架构兼容、Windows 兼容层和图形接口适配，部分游戏已经可以尝试在手机上本地运行。</p>
+<p>当然，这不等于所有 PC 游戏都能直接运行，但它确实提供了另一种思路：<strong>不必针对每款游戏重新制作一个安卓版本，也有机会让现有 PC 游戏在移动设备上运行。</strong></p>
+<p>除此之外，DroidDeck 还在整合 GOG、Epic Games、Amazon Games 等游戏平台，并提供 Linux 桌面环境。它的目标不再局限于启动几个游戏，而是逐步构建更完整的移动端 PC 游戏体验。</p>
+<h2 id="三、硬件要求与实际体验"><a href="#三、硬件要求与实际体验" class="headerlink" title="三、硬件要求与实际体验"></a>三、硬件要求与实际体验</h2><p>遗憾的是，目前 DroidDeck 对 GPU 的要求比较苛刻。</p>
+<p>根据<a target="_blank" rel="noopener" href="https://github.com/Droid-Deck/DroidDeck/blob/main/README.md">官方 README</a>，目前主要支持 Adreno 730 及更新的相关型号，以及 Adreno 8xx 系列；Adreno 6xx 系列属于实验性支持，而 Adreno 710、Mali、Xclipse、PowerVR 等 GPU 暂不在官方支持范围内。</p>
+<p>说人话就是：<strong>目前主要面向搭载兼容 Adreno GPU 的高通骁龙设备，不能只看处理器名字或者跑分判断能不能用。</strong></p>
+<p>所以，使用联发科天玑、苹果 A 系列或者华为相关设备的朋友，目前就先羡慕一下吧（楽）。不过，其他 GPU 的支持也是值得关注的后续发展方向。</p>
+<p>我自己也折腾了好几个小时，总算成功跑起来了。</p>
+<p>我的设备搭载骁龙 6 Gen 4，GPU 为 Adreno 810。虽然能够进入支持范围，但实际表现并不算理想。不过，玩一些对配置要求不高的游戏，暂时还是够用的。</p>
+<p>目前我只测试了《100% Orange Juice》这一款游戏，还遇到了显示方面的兼容性 Bug，体验只能说是有喜有忧。</p>
+<p>但说到底，谁会专门拿手机转译运行环境，硬啃 3A 大作呢？</p>
+<p>想获得更好的画质、帧率和操作体验，老老实实用电脑才是正解。手机的优势在于便携：出门在外、没有电脑，或者晚上躺在被窝里的时候，能掏出手机玩一会儿 Steam 库里的小游戏，不就已经很香了吗？</p>
+<h2 id="四、当前局限与未来前景"><a href="#四、当前局限与未来前景" class="headerlink" title="四、当前局限与未来前景"></a>四、当前局限与未来前景</h2><p>现阶段，DroidDeck 仍有几个明显的短板：</p>
+<ul>
+<li><p><strong>硬件限制：</strong> GPU 兼容性覆盖有限，很多搭载 Mali、Xclipse 等 GPU 的设备暂时无法使用。</p>
+</li>
+<li><p><strong>游戏兼容性：</strong> 不同游戏对图形接口、运行库和反作弊系统的要求不同，能启动不代表能稳定游玩。</p>
+</li>
+<li><p><strong>性能与散热：</strong> 手机的功耗和散热能力有限，部分游戏可能出现卡顿、发热或帧率下降。</p>
+</li>
+<li><p><strong>使用门槛：</strong> 安装运行环境、配置组件和排查兼容性问题，仍然需要一些折腾精神。</p>
+</li>
+</ul>
+<p>不过，这些问题并不意味着项目没有前景。恰恰相反，DroidDeck 目前仍在快速发展，随着开发者持续改进驱动适配、游戏兼容性和交互体验，未来有望支持更多设备，并降低普通用户的使用门槛。</p>
+<p>对我来说，它最有吸引力的应用场景从来不是用手机取代游戏电脑，而是把 PC 游戏的可玩范围延伸到更多日常场景。</p>
+<p>而且！</p>
+<h2 id="五、总结：躺在被窝里玩-Steam-库的时代，或许真的来了"><a href="#五、总结：躺在被窝里玩-Steam-库的时代，或许真的来了" class="headerlink" title="五、总结：躺在被窝里玩 Steam 库的时代，或许真的来了"></a>五、总结：躺在被窝里玩 Steam 库的时代，或许真的来了</h2><p>是的，<strong>躺在被窝里用手机玩 Steam 库里的 Galgame 和黄油的时代，终究还是要来了！</strong></p>
+<p>DroidDeck 当然还不完美，现阶段甚至可能需要花上几个小时折腾，才能获得一个勉强满意的结果。但至少，它已经把一个过去更多停留在设想里的想法，变成了可以亲自安装、测试和改进的开源项目。</p>
+<p>以前，想在安卓手机上玩 PC 游戏，往往要考虑移植、串流或者其他替代方案；现在，我们终于有机会通过本地运行与兼容层，让部分现有 PC 游戏直接进入手机。</p>
+<p>项目才刚刚起步，还有很多问题等待解决。不过，既然已经有这么多开发者参与其中，就值得期待它在未来不断完善。</p>
+<p><strong>手机不一定能取代电脑，但它正在变成一个更灵活的 PC 游戏终端。</strong></p>
+<p>至于以后能不能让更多设备加入这场狂欢，就让我们继续关注 DroidDeck 的更新吧。</p>
+<p>让我们一起见证这一刻！🎮</p>
+<hr>
+<p><strong>项目地址：</strong> <a target="_blank" rel="noopener" href="https://github.com/Droid-Deck/DroidDeck">Droid-Deck&#x2F;DroidDeck · GitHub</a></p>
+<p><strong>最新版本：</strong> <a target="_blank" rel="noopener" href="https://github.com/Droid-Deck/DroidDeck/releases">DroidDeck 0.4.0 Releases</a></p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+            <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2026 とらえの小窝
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;胡傲魁（とらえ)
+        </div>
+        <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+        
+        <transition name="fade">
+            <div id="preview" ref="preview" v-show="previewShow">
+                <img id="preview-content" ref="previewContent" />
+            </div>
+        </transition>
+        
+    </div>
+    <script src="/js/main.js"></script>
+    
+    
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Torae233/Torae233.github.io"
+    data-repo-id="R_kgDONRItTw"
+    data-category="Announcements"
+    data-category-id="DIC_kwDONRItT84CklS9"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang=""
+    crossorigin
+    async
+></script>
+
+
+
+
+
+    
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+
+<!--浏览器搞笑标题-->
+<script type="text/javascript" src="/js/FunnyTitle.js"></script>
