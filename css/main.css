@@ -973,3 +973,21 @@ ol li {
         padding-left: 20px;
     }
 }
+/* ParticleX：修复代码块长行溢出，不自动换行的问题 */
+.code-content {
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    overflow-x: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* 兼容代码高亮与行号显示 */
+.code-content pre,
+.code-content code,
+.code-content .hljs-ln-code {
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}

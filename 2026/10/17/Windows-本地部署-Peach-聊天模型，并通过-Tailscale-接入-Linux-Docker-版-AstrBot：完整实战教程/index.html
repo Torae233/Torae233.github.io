@@ -184,7 +184,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/AI/" style="color: #00bcd4">
+                <a href="/tags/AI/" style="color: #03a9f4">
                     AI
                 </a>
             </span>
@@ -206,52 +206,16 @@
 <p><strong>请注意：文中的 Tailscale IP 均使用占位符，执行前必须替换成自己设备的实际地址。不要把 Ollama 的 11434 端口公开到互联网。</strong></p>
 </blockquote>
 <h2 id="1-最终效果与架构"><a href="#1-最终效果与架构" class="headerlink" title="1. 最终效果与架构"></a>1. 最终效果与架构</h2><p>本方案不是把模型部署到云服务器，而是让 Windows 本地电脑负责推理，云服务器继续运行机器人和消息平台适配器。AstrBot 通过兼容 OpenAI 格式的 HTTP API 请求本地 Ollama。</p>
-<p><strong>消息与推理链路：</strong></p>
-<table>
-<thead>
-<tr>
-<th align="right">顺序</th>
-<th>组件</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="right">1</td>
-<td>QQ 私聊</td>
-<td>用户发送消息</td>
-</tr>
-<tr>
-<td align="right">2</td>
-<td>Napcat（Docker 容器）</td>
-<td>接收并转发 QQ 消息</td>
-</tr>
-<tr>
-<td align="right">3</td>
-<td>AstrBot（Docker 容器）</td>
-<td>处理消息、人格与上下文</td>
-</tr>
-<tr>
-<td align="right">4</td>
-<td>Tailscale 私有网络</td>
-<td>安全连接云服务器与本地电脑</td>
-</tr>
-<tr>
-<td align="right">5</td>
-<td>Windows 11 上的 Ollama</td>
-<td>通过 HTTP API 提供模型服务</td>
-</tr>
-<tr>
-<td align="right">6</td>
-<td>Peach-Framboise GGUF 模型</td>
-<td>执行本地文本推理</td>
-</tr>
-<tr>
-<td align="right">7</td>
-<td>RTX 3060 8GB</td>
-<td>承担主要 GPU 推理工作</td>
-</tr>
-</tbody></table>
-<p><strong>请求方向：</strong> QQ 私聊 → Napcat → AstrBot → Tailscale → Windows Ollama → Peach-Framboise → 生成回复后沿原链路返回 QQ。</p>
+<div class="mermaid">
+flowchart LR
+    U["QQ 私聊"] --> NC["Napcat Docker 容器"]
+    NC --> AB["AstrBot Docker 容器"]
+    AB -- "HTTP API: 11434/v1" --> TS["Tailscale 私有网络"]
+    TS --> OL["Windows 11 - Ollama"]
+    OL --> GPU["Peach-Framboise GGUF 模型"]
+    GPU --> VRAM["RTX 3060 8GB"]
+</div>
+
 <p><strong>链路说明：</strong></p>
 <ul>
 <li>Windows 本机安装 Ollama，并使用 NVIDIA 显卡运行量化后的 Peach 模型。</li>
@@ -309,14 +273,24 @@
 <p>注：该模型在后续使用过程中发现“无法通过修改人格提示词等多种方式使其不再出现回复内容中描述<em>动作</em> ”（可能是该模型在训练时极大程度的加强了动作场景等描述，以及指令遵循能力不够强）</p>
 </blockquote>
 <h2 id="3-规划本地目录"><a href="#3-规划本地目录" class="headerlink" title="3. 规划本地目录"></a>3. 规划本地目录</h2><p>先在 D 盘准备两个目录：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">D:\AI\</span><br><span class="line">├── Ollama\</span><br><span class="line">│   └── models\    # Ollama 自己管理的模型仓库</span><br><span class="line">└── Peach\         # 手动下载的 GGUF 与 Modelfile</span><br></pre></td></tr></table></figure>
-
+<pre><code class="text">D:\AI\
+├── Ollama\
+│   └── models\    # Ollama 自己管理的模型仓库
+└── Peach\         # 手动下载的 GGUF 与 Modelfile
+</code></pre>
 <p>在 PowerShell 中执行：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">New-Item</span> <span class="literal">-ItemType</span> Directory <span class="literal">-Force</span> <span class="string">&quot;D:\AI\Ollama\models&quot;</span> | <span class="built_in">Out-Null</span></span><br><span class="line"><span class="built_in">New-Item</span> <span class="literal">-ItemType</span> Directory <span class="literal">-Force</span> <span class="string">&quot;D:\AI\Peach&quot;</span> | <span class="built_in">Out-Null</span></span><br><span class="line"></span><br><span class="line">[<span class="type">Environment</span>]::SetEnvironmentVariable(</span><br><span class="line">    <span class="string">&quot;OLLAMA_MODELS&quot;</span>,</span><br><span class="line">    <span class="string">&quot;D:\AI\Ollama\models&quot;</span>,</span><br><span class="line">    <span class="string">&quot;User&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<pre><code class="powershell">New-Item -ItemType Directory -Force &quot;D:\AI\Ollama\models&quot; | Out-Null
+New-Item -ItemType Directory -Force &quot;D:\AI\Peach&quot; | Out-Null
 
+[Environment]::SetEnvironmentVariable(
+    &quot;OLLAMA_MODELS&quot;,
+    &quot;D:\AI\Ollama\models&quot;,
+    &quot;User&quot;
+)
+</code></pre>
 <p>这会把 Ollama 用户级模型存储目录设置到 D 盘。然后在 Windows 右下角系统托盘中右键 Ollama 图标，选择 <strong>Quit Ollama</strong>，再从开始菜单重新打开 Ollama，让新环境变量生效。也可以新开一个 PowerShell 检查：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$env:OLLAMA_MODELS</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">$env:OLLAMA_MODELS
+</code></pre>
 <p>预期显示 <code>D:\AI\Ollama\models</code>。</p>
 <p>Ollama 官方说明：Windows 安装后会在后台运行，默认提供本机 API；模型存储位置可以用用户环境变量 <code>OLLAMA_MODELS</code> 调整。参考：<a target="_blank" rel="noopener" href="https://docs.ollama.com/windows">Ollama Windows 文档</a>。</p>
 <h2 id="4-安装-Ollama"><a href="#4-安装-Ollama" class="headerlink" title="4. 安装 Ollama"></a>4. 安装 Ollama</h2><ol>
@@ -325,90 +299,142 @@
 <li>安装后从开始菜单启动 Ollama。</li>
 <li>打开 PowerShell 检查命令是否可用：</li>
 </ol>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama <span class="literal">--version</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama --version
+</code></pre>
 <p>如果显示版本号，安装基本完成。NVIDIA 显卡要确保驱动正常，Ollama Windows 文档列出了当前驱动与系统要求，安装前可查看：<a target="_blank" rel="noopener" href="https://docs.ollama.com/windows">Ollama Windows 系统要求</a>。</p>
 <h2 id="5-下载-Peach-GGUF-文件"><a href="#5-下载-Peach-GGUF-文件" class="headerlink" title="5. 下载 Peach GGUF 文件"></a>5. 下载 Peach GGUF 文件</h2><h3 id="方法-A：Ollama-直接从-Hugging-Face-下载"><a href="#方法-A：Ollama-直接从-Hugging-Face-下载" class="headerlink" title="方法 A：Ollama 直接从 Hugging Face 下载"></a>方法 A：Ollama 直接从 Hugging Face 下载</h3><p>Ollama 支持通过 Hugging Face GGUF 仓库启动模型，例如：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama run hf.co/mradermacher/Peach<span class="literal">-2</span>.<span class="number">0</span><span class="literal">-9B-8k-Roleplay-GGUF</span>:Q4_K_M</span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama run hf.co/mradermacher/Peach-2.0-9B-8k-Roleplay-GGUF:Q4_K_M
+</code></pre>
 <p><strong>但本案例实际遇到过失败：</strong></p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: redirect target not allowed: us.aws.cdn.hf.co resolves to non-public 198.18.0.132</span><br></pre></td></tr></table></figure>
-
+<pre><code class="text">Error: redirect target not allowed: us.aws.cdn.hf.co resolves to non-public 198.18.0.132
+</code></pre>
 <p>这通常提示下载跳转的 DNS 解析结果与客户端的安全检查冲突；如果电脑上的代理软件启用了 Fake-IP&#x2F;DNS 映射，也可能出现 <code>198.18.x.x</code> 这类地址。不要为了绕过问题而关闭安全检查或把 Ollama API 暴露到公网。</p>
 <h3 id="方法-B：浏览器下载-GGUF（本案例成功使用）"><a href="#方法-B：浏览器下载-GGUF（本案例成功使用）" class="headerlink" title="方法 B：浏览器下载 GGUF（本案例成功使用）"></a>方法 B：浏览器下载 GGUF（本案例成功使用）</h3><p>打开这个文件直链：</p>
 <p><a target="_blank" rel="noopener" href="https://huggingface.co/mradermacher/Peach-2.0-9B-8k-Roleplay-GGUF/resolve/main/Peach-2.0-9B-8k-Roleplay.Q4_K_M.gguf">下载 Peach Q4_K_M GGUF 文件</a></p>
 <p>将文件保存到：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D:\AI\Peach\Peach-2.0-9B-8k-Roleplay.Q4_K_M.gguf</span><br></pre></td></tr></table></figure>
-
+<pre><code class="text">D:\AI\Peach\Peach-2.0-9B-8k-Roleplay.Q4_K_M.gguf
+</code></pre>
 <p>下载后核对文件名和大小。Q4_K_M 文件约 5.33GB；还要为 Ollama 导入后的模型数据及其他文件预留空间。</p>
 <h2 id="6-用-Modelfile-导入本地-GGUF"><a href="#6-用-Modelfile-导入本地-GGUF" class="headerlink" title="6. 用 Modelfile 导入本地 GGUF"></a>6. 用 Modelfile 导入本地 GGUF</h2><p>打开 PowerShell，创建一个名为 <code>Modelfile</code> 的文本文件。注意文件名不要变成 <code>Modelfile.txt</code>。</p>
 <p>执行：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">@&#x27;</span></span><br><span class="line"><span class="string">FROM D:/AI/Peach/Peach-2.0-9B-8k-Roleplay.Q4_K_M.gguf</span></span><br><span class="line"><span class="string">PARAMETER num_ctx 4096</span></span><br><span class="line"><span class="string">&#x27;@</span> | <span class="built_in">Set-Content</span> <span class="literal">-Path</span> <span class="string">&quot;D:\AI\Peach\Modelfile&quot;</span> <span class="literal">-Encoding</span> ascii</span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">@&#39;
+FROM D:/AI/Peach/Peach-2.0-9B-8k-Roleplay.Q4_K_M.gguf
+PARAMETER num_ctx 4096
+&#39;@ | Set-Content -Path &quot;D:\AI\Peach\Modelfile&quot; -Encoding ascii
+</code></pre>
 <p>这里先用 4096 tokens 作为基础测试。然后执行：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama create peach<span class="literal">-roleplay</span> <span class="operator">-f</span> <span class="string">&quot;D:\AI\Peach\Modelfile&quot;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama create peach-roleplay -f &quot;D:\AI\Peach\Modelfile&quot;
+</code></pre>
 <p>等待输出 <code>success</code>。检查模型列表：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama list</span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama list
+</code></pre>
 <p>应当能看到 <code>peach-roleplay:latest</code>。启动模型：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama run peach<span class="literal">-roleplay</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama run peach-roleplay
+</code></pre>
 <p>输入一段中文测试，例如“请用自然的简体中文和我打个招呼”。能够正常回复，就说明本地 GGUF 已被 Ollama 正常加载。</p>
 <blockquote>
 <p>经验：手动导入 GGUF 时，<code>Modelfile</code> 可以用 <code>FROM &lt;GGUF 文件路径&gt;</code>。这里没有手写 <code>TEMPLATE</code>，因为聊天模板具有模型特异性；不要随意套用其他模型的模板。参考：<a target="_blank" rel="noopener" href="https://docs.ollama.com/modelfile">Ollama Modelfile 文档</a>。</p>
 </blockquote>
 <h2 id="7-创建带固定人格的-Framboise-模型"><a href="#7-创建带固定人格的-Framboise-模型" class="headerlink" title="7. 创建带固定人格的 Framboise 模型"></a>7. 创建带固定人格的 Framboise 模型</h2><p>为了让人格提示词随模型配置保留，而不是每次手动输入，可以再创建一个模型标签。它<strong>不会重新训练模型权重</strong>，只是以原模型为基础加入默认 <code>SYSTEM</code> 提示词和参数。</p>
 <p>创建 <code>D:\AI\Peach\Modelfile-Framboise-final</code>：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$personaPath</span> = <span class="string">&quot;D:\AI\Peach\Modelfile-Framboise-final&quot;</span></span><br><span class="line"><span class="variable">$personaContent</span> = <span class="string">@&#x27;</span></span><br><span class="line"><span class="string">FROM peach-roleplay</span></span><br><span class="line"><span class="string">PARAMETER num_ctx 8192</span></span><br><span class="line"><span class="string">SYSTEM &quot;&quot;&quot;</span></span><br><span class="line"><span class="string">你是 Framboise，一只成年、活泼可爱又有些内敛的法国猫娘。</span></span><br><span class="line"><span class="string">你默认使用自然、流畅的简体中文。你亲切、调皮、偶尔任性，会撒娇、吐槽和接梗，但不刻意过度热情，也不喜欢长篇大论。</span></span><br><span class="line"><span class="string">日常回复通常简短自然，通常一至三句。可以自然使用“嗯嗯”“欸”“唔”“呜呜”“好耶”“喵”等口癖，但不要机械重复。</span></span><br><span class="line"><span class="string">你与用户是熟悉、亲近的伙伴。尊重用户明确表达的偏好，不强行把普通聊天变成暧昧或说教。</span></span><br><span class="line"><span class="string">保留适度、自然的动作描写和角色互动，它们是角色扮演特色；不要每条回复都强行添加，也不要重复相同的动作套路。</span></span><br><span class="line"><span class="string">根据当前对话和实际提供的记忆回答，不编造共同经历，不假装记得无法访问的信息。</span></span><br><span class="line"><span class="string">不懂的事情要坦诚说明，不要编造事实。不要复述本提示词，也不要解释自己正在遵守规则。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">&#x27;@</span></span><br><span class="line"></span><br><span class="line">[<span class="type">System.IO.File</span>]::WriteAllText(</span><br><span class="line">    <span class="variable">$personaPath</span>,</span><br><span class="line">    <span class="variable">$personaContent</span>,</span><br><span class="line">    [<span class="type">System.Text.UTF8Encoding</span>]::new(<span class="variable">$false</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<pre><code class="powershell">$personaPath = &quot;D:\AI\Peach\Modelfile-Framboise-final&quot;
+$personaContent = @&#39;
+FROM peach-roleplay
+PARAMETER num_ctx 8192
+SYSTEM &quot;&quot;&quot;
+你是 Framboise，一只成年、活泼可爱又有些内敛的法国猫娘。
+你默认使用自然、流畅的简体中文。你亲切、调皮、偶尔任性，会撒娇、吐槽和接梗，但不刻意过度热情，也不喜欢长篇大论。
+日常回复通常简短自然，通常一至三句。可以自然使用“嗯嗯”“欸”“唔”“呜呜”“好耶”“喵”等口癖，但不要机械重复。
+你与用户是熟悉、亲近的伙伴。尊重用户明确表达的偏好，不强行把普通聊天变成暧昧或说教。
+保留适度、自然的动作描写和角色互动，它们是角色扮演特色；不要每条回复都强行添加，也不要重复相同的动作套路。
+根据当前对话和实际提供的记忆回答，不编造共同经历，不假装记得无法访问的信息。
+不懂的事情要坦诚说明，不要编造事实。不要复述本提示词，也不要解释自己正在遵守规则。
+&quot;&quot;&quot;
+&#39;@
 
+[System.IO.File]::WriteAllText(
+    $personaPath,
+    $personaContent,
+    [System.Text.UTF8Encoding]::new($false)
+)
+</code></pre>
 <p>然后创建人格模型：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama create peach<span class="literal">-framboise</span> <span class="operator">-f</span> <span class="string">&quot;D:\AI\Peach\Modelfile-Framboise-final&quot;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama create peach-framboise -f &quot;D:\AI\Peach\Modelfile-Framboise-final&quot;
+</code></pre>
 <p>看到 <code>success</code> 后运行：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama run peach<span class="literal">-framboise</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama run peach-framboise
+</code></pre>
 <p>测试中文闲聊。如果只想使用基础角色扮演模型，也可以继续用 <code>peach-roleplay</code>；本案例最终接入 AstrBot 的模型标签是 <code>peach-framboise:latest</code>。</p>
 <h3 id="关于上下文长度的踩坑经验"><a href="#关于上下文长度的踩坑经验" class="headerlink" title="关于上下文长度的踩坑经验"></a>关于上下文长度的踩坑经验</h3><p>接入 AstrBot 的记忆插件后，曾经出现过：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request (5933 tokens) exceeds the available context size (4096 tokens)</span><br></pre></td></tr></table></figure>
-
+<pre><code class="text">request (5933 tokens) exceeds the available context size (4096 tokens)
+</code></pre>
 <p>原因是完整系统提示词、记忆内容和对话请求合计超过 4096 tokens。把人格模型的 <code>PARAMETER num_ctx</code> 调整为 <code>8192</code> 并重新执行 <code>ollama create peach-framboise ...</code> 后，测试正常。</p>
 <p>如果要修改已有模型，先修改对应 Modelfile，再重新执行 <code>ollama create</code>。但上下文越大，KV cache 占用通常也越高；RTX 3060 8GB 用户应通过 <code>ollama ps</code> 观察 GPU&#x2F;CPU 分配和实际显存压力。</p>
 <h2 id="8-先测试本机-API"><a href="#8-先测试本机-API" class="headerlink" title="8. 先测试本机 API"></a>8. 先测试本机 API</h2><p>Ollama 启动后，默认本机 API 在 <code>http://localhost:11434</code>。在尚未把监听地址限制到 Tailscale IP 之前，先验证本机 API。</p>
 <p>列出模型：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Invoke-RestMethod</span> <span class="literal">-Uri</span> <span class="string">&quot;http://127.0.0.1:11434/api/tags&quot;</span> |</span><br><span class="line">    <span class="built_in">ConvertTo-Json</span> <span class="literal">-Depth</span> <span class="number">5</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">Invoke-RestMethod -Uri &quot;http://127.0.0.1:11434/api/tags&quot; |
+    ConvertTo-Json -Depth 5
+</code></pre>
 <p>返回的模型列表中应包含 <code>peach-framboise:latest</code>。</p>
 <p>再实际生成一次回复：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$body</span> = <span class="selector-tag">@</span>&#123;</span><br><span class="line">    model = <span class="string">&quot;peach-framboise:latest&quot;</span></span><br><span class="line">    messages = <span class="selector-tag">@</span>(</span><br><span class="line">        <span class="selector-tag">@</span>&#123;</span><br><span class="line">            role = <span class="string">&quot;user&quot;</span></span><br><span class="line">            content = <span class="string">&quot;请用自然的简体中文简短回复：本地 API 测试成功。&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br><span class="line">    stream = <span class="variable">$false</span></span><br><span class="line">    options = <span class="selector-tag">@</span>&#123; num_ctx = <span class="number">8192</span> &#125;</span><br><span class="line">&#125; | <span class="built_in">ConvertTo-Json</span> <span class="literal">-Depth</span> <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$response</span> = <span class="built_in">Invoke-RestMethod</span> `</span><br><span class="line">    <span class="literal">-Uri</span> <span class="string">&quot;http://127.0.0.1:11434/api/chat&quot;</span> `</span><br><span class="line">    <span class="literal">-Method</span> Post `</span><br><span class="line">    <span class="literal">-ContentType</span> <span class="string">&quot;application/json; charset=utf-8&quot;</span> `</span><br><span class="line">    <span class="literal">-Body</span> ([<span class="type">System.Text.Encoding</span>]::UTF8.GetBytes(<span class="variable">$body</span>))</span><br><span class="line"></span><br><span class="line"><span class="variable">$response</span>.message.content</span><br></pre></td></tr></table></figure>
+<pre><code class="powershell">$body = @&#123;
+    model = &quot;peach-framboise:latest&quot;
+    messages = @(
+        @&#123;
+            role = &quot;user&quot;
+            content = &quot;请用自然的简体中文简短回复：本地 API 测试成功。&quot;
+        &#125;
+    )
+    stream = $false
+    options = @&#123; num_ctx = 8192 &#125;
+&#125; | ConvertTo-Json -Depth 6
 
+$response = Invoke-RestMethod `
+    -Uri &quot;http://127.0.0.1:11434/api/chat&quot; `
+    -Method Post `
+    -ContentType &quot;application/json; charset=utf-8&quot; `
+    -Body ([System.Text.Encoding]::UTF8.GetBytes($body))
+
+$response.message.content
+</code></pre>
 <p>这里特意将请求体转成 UTF-8 字节，避免部分 Windows PowerShell 版本发送中文 JSON 时出现编码问题。</p>
 <h2 id="9-在-Windows-和-OpenCloudOS-上加入-Tailscale"><a href="#9-在-Windows-和-OpenCloudOS-上加入-Tailscale" class="headerlink" title="9. 在 Windows 和 OpenCloudOS 上加入 Tailscale"></a>9. 在 Windows 和 OpenCloudOS 上加入 Tailscale</h2><h3 id="9-1-Windows-安装"><a href="#9-1-Windows-安装" class="headerlink" title="9.1 Windows 安装"></a>9.1 Windows 安装</h3><p>从 <a target="_blank" rel="noopener" href="https://tailscale.com/download/windows">Tailscale Windows 官方下载页</a>安装客户端，并登录一个 Tailscale 账号。云服务器也必须加入同一个 tailnet。</p>
 <h3 id="9-2-OpenCloudOS-9-6-安装"><a href="#9-2-OpenCloudOS-9-6-安装" class="headerlink" title="9.2 OpenCloudOS 9.6 安装"></a>9.2 OpenCloudOS 9.6 安装</h3><p>本案例中，Tailscale 通用安装脚本无法识别 <code>OpenCloudOS 9.6</code>。当时使用 RHEL 9 兼容仓库安装成功。<strong>这是本案例实测可用的兼容方式，不等于所有 OpenCloudOS 衍生环境都必然兼容；安装前应核实系统版本和仓库兼容性。</strong></p>
 <p>在宝塔终端（Linux 宿主机，不是 AstrBot 容器内部）执行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://pkgs.tailscale.com/stable/rhel/9/tailscale.repo \</span><br><span class="line">  -o /etc/yum.repos.d/tailscale.repo</span><br><span class="line"></span><br><span class="line">dnf install -y tailscale</span><br><span class="line">systemctl <span class="built_in">enable</span> --now tailscaled</span><br><span class="line">tailscale up</span><br></pre></td></tr></table></figure>
+<pre><code class="bash">curl -fsSL https://pkgs.tailscale.com/stable/rhel/9/tailscale.repo \
+  -o /etc/yum.repos.d/tailscale.repo
 
+dnf install -y tailscale
+systemctl enable --now tailscaled
+tailscale up
+</code></pre>
 <p><code>tailscale up</code> 首次运行会给出登录授权网址。用浏览器打开并完成授权。接着查看两台设备的 Tailscale IP：</p>
 <p>Windows PowerShell：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tailscale status</span><br><span class="line">tailscale ip <span class="literal">-4</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">tailscale status
+tailscale ip -4
+</code></pre>
 <p>Linux 宿主机：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tailscale status</span><br><span class="line">tailscale ip -4</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">tailscale status
+tailscale ip -4
+</code></pre>
 <p>记下两个实际地址：</p>
 <ul>
 <li><code>WIN_TS_IP</code>：Windows 本地电脑的 Tailscale IPv4。</li>
 <li><code>SERVER_TS_IP</code>：OpenCloudOS 云服务器的 Tailscale IPv4。</li>
 </ul>
 <p>测试云服务器能否找到 Windows：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tailscale ping WIN_TS_IP</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">tailscale ping WIN_TS_IP
+</code></pre>
 <p>将 <code>WIN_TS_IP</code> 替换成真实地址。如果显示 <code>via DERP(...)</code> 且有 <code>pong</code>，说明通过中继可达；但延迟可能比较高。<code>direct connection not established</code> 并不等于完全无法使用，只是当前没有建立直接点对点连接。</p>
 <p>Tailscale 安装参考：<a target="_blank" rel="noopener" href="https://tailscale.com/docs/install/linux">Tailscale Linux 安装文档</a> 和 <a target="_blank" rel="noopener" href="https://pkgs.tailscale.com/stable/">官方软件包列表</a>。</p>
 <h2 id="10-让-Ollama-只监听-Windows-的-Tailscale-地址"><a href="#10-让-Ollama-只监听-Windows-的-Tailscale-地址" class="headerlink" title="10. 让 Ollama 只监听 Windows 的 Tailscale 地址"></a>10. 让 Ollama 只监听 Windows 的 Tailscale 地址</h2><p>默认的 <code>localhost</code> 只对 Windows 本机开放，云服务器无法用它访问。因此我们为 Ollama 设置一个专用监听地址。</p>
 <p>在 Windows PowerShell 中，将下面的 <code>WIN_TS_IP</code> 替换为 Windows 自己的 Tailscale IP：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">Environment</span>]::SetEnvironmentVariable(</span><br><span class="line">    <span class="string">&quot;OLLAMA_HOST&quot;</span>,</span><br><span class="line">    <span class="string">&quot;WIN_TS_IP:11434&quot;</span>,</span><br><span class="line">    <span class="string">&quot;User&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">[Environment]::SetEnvironmentVariable(
+    &quot;OLLAMA_HOST&quot;,
+    &quot;WIN_TS_IP:11434&quot;,
+    &quot;User&quot;
+)
+</code></pre>
 <p>注意：上面写的是地址和端口，不要加 <code>http://</code>。例如格式是 <code>100.x.y.z:11434</code>，但请使用自己真实的 IP，不要照搬其他人的地址。</p>
 <p>然后：</p>
 <ol>
@@ -417,32 +443,63 @@
 <li>从开始菜单重新启动 Ollama。</li>
 <li>在新开的 PowerShell 中检查监听地址：</li>
 </ol>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Get-NetTCPConnection</span> <span class="literal">-State</span> Listen <span class="literal">-LocalPort</span> <span class="number">11434</span> |</span><br><span class="line">    <span class="built_in">Select-Object</span> LocalAddress, LocalPort</span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">Get-NetTCPConnection -State Listen -LocalPort 11434 |
+    Select-Object LocalAddress, LocalPort
+</code></pre>
 <p>预期 <code>LocalAddress</code> 是你填写的 Windows Tailscale IP，而不是 <code>0.0.0.0</code>。如果还显示 <code>127.0.0.1</code>，说明 Ollama 可能尚未读取新的环境变量；退出并重新启动它再检查。</p>
 <h2 id="11-用-Windows-防火墙限制-API-来源"><a href="#11-用-Windows-防火墙限制-API-来源" class="headerlink" title="11. 用 Windows 防火墙限制 API 来源"></a>11. 用 Windows 防火墙限制 API 来源</h2><p><strong>Ollama 的本地 API 不应被当作自带身份验证的公网服务。</strong> 本案例采取的是：只监听 Tailscale 地址，并仅允许自己的云服务器 Tailscale IP 访问。</p>
 <p>先检查 Windows 防火墙状态：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Get-NetFirewallProfile</span> |</span><br><span class="line">    <span class="built_in">Format-Table</span> Name, Enabled, DefaultInboundAction</span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">Get-NetFirewallProfile |
+    Format-Table Name, Enabled, DefaultInboundAction
+</code></pre>
 <p>确保 Windows 防火墙处于启用状态，并且入站默认策略是阻止。如果你用第三方防火墙管理安全策略，先按实际环境配置，不要盲目叠加规则。</p>
 <p>在管理员 PowerShell 中执行下面的规则。把两个占位符替换成真实 IP，且只执行一次：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$winTsIp</span> = <span class="string">&quot;WIN_TS_IP&quot;</span></span><br><span class="line"><span class="variable">$serverTsIp</span> = <span class="string">&quot;SERVER_TS_IP&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">New-NetFirewallRule</span> `</span><br><span class="line">  <span class="literal">-DisplayName</span> <span class="string">&quot;Ollama API - Tailscale Cloud Only&quot;</span> `</span><br><span class="line">  <span class="literal">-Direction</span> Inbound `</span><br><span class="line">  <span class="literal">-Action</span> Allow `</span><br><span class="line">  <span class="literal">-Protocol</span> TCP `</span><br><span class="line">  <span class="literal">-LocalAddress</span> <span class="variable">$winTsIp</span> `</span><br><span class="line">  <span class="literal">-LocalPort</span> <span class="number">11434</span> `</span><br><span class="line">  <span class="literal">-RemoteAddress</span> <span class="variable">$serverTsIp</span> `</span><br><span class="line">  <span class="literal">-Profile</span> Any</span><br></pre></td></tr></table></figure>
+<pre><code class="powershell">$winTsIp = &quot;WIN_TS_IP&quot;
+$serverTsIp = &quot;SERVER_TS_IP&quot;
 
+New-NetFirewallRule `
+  -DisplayName &quot;Ollama API - Tailscale Cloud Only&quot; `
+  -Direction Inbound `
+  -Action Allow `
+  -Protocol TCP `
+  -LocalAddress $winTsIp `
+  -LocalPort 11434 `
+  -RemoteAddress $serverTsIp `
+  -Profile Any
+</code></pre>
 <p>检查规则：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Get-NetFirewallRule</span> <span class="literal">-DisplayName</span> <span class="string">&quot;Ollama API - Tailscale Cloud Only&quot;</span> |</span><br><span class="line">    <span class="built_in">Format-Table</span> DisplayName, Enabled, Direction, Action, Profile</span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">Get-NetFirewallRule -DisplayName &quot;Ollama API - Tailscale Cloud Only&quot; |
+    Format-Table DisplayName, Enabled, Direction, Action, Profile
+</code></pre>
 <p><strong>不要</strong>在路由器、宝塔安全设置或云服务器安全组中把 TCP 11434 开放到公网。API Key 字段中填 <code>ollama</code> 只是 AstrBot&#x2F;Ollama 兼容接入时使用的占位值，不应当视为安全认证。</p>
 <h2 id="12-从-Linux-宿主机测试远程-API"><a href="#12-从-Linux-宿主机测试远程-API" class="headerlink" title="12. 从 Linux 宿主机测试远程 API"></a>12. 从 Linux 宿主机测试远程 API</h2><p>回到宝塔终端的 OpenCloudOS 宿主机执行，把 <code>WIN_TS_IP</code> 替换为 Windows 的真实 Tailscale IP：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl --connect-timeout 10 \</span><br><span class="line">  <span class="string">&quot;http://WIN_TS_IP:11434/api/tags&quot;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">curl --connect-timeout 10 \
+  &quot;http://WIN_TS_IP:11434/api/tags&quot;
+</code></pre>
 <p>如果返回 JSON，并能看到 <code>peach-framboise:latest</code>，说明云服务器宿主机已能读取 Ollama 模型列表。</p>
 <p>再测试真实聊天请求：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">curl --connect-timeout 10 --max-time 180 -sS \</span><br><span class="line">  <span class="string">&quot;http://WIN_TS_IP:11434/api/chat&quot;</span> \</span><br><span class="line">  -H <span class="string">&#x27;Content-Type: application/json&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">    &quot;model&quot;: &quot;peach-framboise:latest&quot;,</span></span><br><span class="line"><span class="string">    &quot;messages&quot;: [</span></span><br><span class="line"><span class="string">      &#123;</span></span><br><span class="line"><span class="string">        &quot;role&quot;: &quot;user&quot;,</span></span><br><span class="line"><span class="string">        &quot;content&quot;: &quot;请用简体中文简短回复：云服务器已成功调用本地 Peach 模型。&quot;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    ],</span></span><br><span class="line"><span class="string">    &quot;stream&quot;: false,</span></span><br><span class="line"><span class="string">    &quot;options&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;num_ctx&quot;: 8192</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">curl --connect-timeout 10 --max-time 180 -sS \
+  &quot;http://WIN_TS_IP:11434/api/chat&quot; \
+  -H &#39;Content-Type: application/json&#39; \
+  -d &#39;&#123;
+    &quot;model&quot;: &quot;peach-framboise:latest&quot;,
+    &quot;messages&quot;: [
+      &#123;
+        &quot;role&quot;: &quot;user&quot;,
+        &quot;content&quot;: &quot;请用简体中文简短回复：云服务器已成功调用本地 Peach 模型。&quot;
+      &#125;
+    ],
+    &quot;stream&quot;: false,
+    &quot;options&quot;: &#123;
+      &quot;num_ctx&quot;: 8192
+    &#125;
+  &#125;&#39;
+</code></pre>
 <p>返回 JSON 中包含 <code>message.content</code> 和 <code>done: true</code>，就说明实际推理请求成功。本案例第一次远程生成总耗时约 8 秒，其中模型加载约 6 秒；首次冷启动比后续请求慢是可能的。之后如果通过 DERP 中继通信，也可能有可感知延迟。</p>
 <h2 id="13-从-AstrBot-Docker-容器内部验证"><a href="#13-从-AstrBot-Docker-容器内部验证" class="headerlink" title="13. 从 AstrBot Docker 容器内部验证"></a>13. 从 AstrBot Docker 容器内部验证</h2><p>宿主机能访问并不意味着容器一定能访问，所以再从 AstrBot 容器内部进行一次检查：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> AstrBot sh -lc \</span><br><span class="line">  <span class="string">&#x27;curl --connect-timeout 5 --max-time 10 -sS &quot;http://WIN_TS_IP:11434/api/tags&quot;&#x27;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">docker exec AstrBot sh -lc \
+  &#39;curl --connect-timeout 5 --max-time 10 -sS &quot;http://WIN_TS_IP:11434/api/tags&quot;&#39;
+</code></pre>
 <p>将 <code>WIN_TS_IP</code> 换成真实地址。容器里应返回同样的模型列表。</p>
 <p>如果容器内没有 <code>curl</code>，可先检查是否有 <code>python3</code>，再用 Python 的 <code>urllib.request</code> 做同样的 GET 请求。不要为了这项测试而直接修改 Docker 网络模式。</p>
 <h2 id="14-在-AstrBot-中添加-Ollama-提供商"><a href="#14-在-AstrBot-中添加-Ollama-提供商" class="headerlink" title="14. 在 AstrBot 中添加 Ollama 提供商"></a>14. 在 AstrBot 中添加 Ollama 提供商</h2><p>这一步在 AstrBot WebUI 里完成。</p>
@@ -479,22 +536,23 @@
 <p>官方步骤参考：<a target="_blank" rel="noopener" href="https://docs.astrbot.app/en/providers/provider-ollama.html">AstrBot：接入 Ollama</a> 与 <a target="_blank" rel="noopener" href="https://docs.astrbot.app/en/providers/llm.html">AstrBot：LLM 提供商</a>。</p>
 <h2 id="15-Docker-持久化：部署前一定要检查"><a href="#15-Docker-持久化：部署前一定要检查" class="headerlink" title="15. Docker 持久化：部署前一定要检查"></a>15. Docker 持久化：部署前一定要检查</h2><p>本案例后来才发现，原先的 AstrBot 容器没有任何数据卷挂载，<code>docker inspect</code> 的 <code>.Mounts</code> 返回 <code>[]</code>。这意味着配置、数据库和插件数据都在容器内部；直接删除或重建容器可能丢失数据。</p>
 <p>检查当前是否有挂载：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format <span class="string">&#x27;&#123;&#123;json .Mounts&#125;&#125;&#x27;</span> AstrBot</span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">docker inspect --format &#39;&#123;&#123;json .Mounts&#125;&#125;&#39; AstrBot
+</code></pre>
 <p>理想状态下，应能看到类似：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/astrbot/data -&gt; /AstrBot/data</span><br></pre></td></tr></table></figure>
-
+<pre><code class="text">/opt/astrbot/data -&gt; /AstrBot/data
+</code></pre>
 <p>新部署容器时，建议使用持久化挂载：</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">/opt/astrbot/data:/AstrBot/data</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="yaml">volumes:
+  - /opt/astrbot/data:/AstrBot/data
+</code></pre>
 <p>如果是已经运行、有插件和数据的容器，<strong>不要直接复制一条新 <code>docker run</code> 命令来替换它</strong>。应先停止容器、备份 <code>/AstrBot/data</code>，核对原镜像 ID、端口映射、重启策略及 Docker 网络，再迁移数据并保留旧容器作为回滚。本文实战环境保留了 <code>6185</code>、<code>6199</code> 两个端口，以及 <code>baota_net</code> 和 <code>bridge</code> 网络，迁移后 QQ 私聊仍正常。</p>
 <h2 id="16-本地模型的关闭与重新启用"><a href="#16-本地模型的关闭与重新启用" class="headerlink" title="16. 本地模型的关闭与重新启用"></a>16. 本地模型的关闭与重新启用</h2><p>这里需要区分“卸载模型”与“关闭 Ollama API 服务”。</p>
 <h3 id="16-1-只卸载模型，释放显存"><a href="#16-1-只卸载模型，释放显存" class="headerlink" title="16.1 只卸载模型，释放显存"></a>16.1 只卸载模型，释放显存</h3><p>在 Windows PowerShell 执行：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama stop peach<span class="literal">-framboise</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama stop peach-framboise
+</code></pre>
 <p>检查：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama <span class="built_in">ps</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama ps
+</code></pre>
 <p>如果模型不再列出，说明它当前没有驻留运行。<strong>Ollama 后台服务仍然在运行</strong>；如果 AstrBot 继续调用这个模型，Ollama 通常会再次加载它，因此这不是彻底关闭服务。</p>
 <h3 id="16-2-完全关闭本地-API-服务"><a href="#16-2-完全关闭本地-API-服务" class="headerlink" title="16.2 完全关闭本地 API 服务"></a>16.2 完全关闭本地 API 服务</h3><ol>
 <li>在 Windows 右下角系统托盘中找到 Ollama。</li>
@@ -508,15 +566,16 @@
 <li>从 Windows 开始菜单重新启动 Ollama。</li>
 <li>如果想预热本地模型，在 PowerShell 执行：</li>
 </ol>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama run peach<span class="literal">-framboise</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">ollama run peach-framboise
+</code></pre>
 <p>聊天测试完后可以输入 <code>/bye</code> 退出交互界面；不需要一直开着这个终端，AstrBot 通过 API 请求时会让 Ollama 加载模型。</p>
 <p>检查监听：</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Get-NetTCPConnection</span> <span class="literal">-State</span> Listen <span class="literal">-LocalPort</span> <span class="number">11434</span> |</span><br><span class="line">    <span class="built_in">Select-Object</span> LocalAddress, LocalPort</span><br></pre></td></tr></table></figure>
-
+<pre><code class="powershell">Get-NetTCPConnection -State Listen -LocalPort 11434 |
+    Select-Object LocalAddress, LocalPort
+</code></pre>
 <p>必须能看到 Windows 自己的 Tailscale IP 和端口 11434。然后在云服务器上再测试：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --connect-timeout 10 <span class="string">&quot;http://WIN_TS_IP:11434/api/tags&quot;</span></span><br></pre></td></tr></table></figure>
-
+<pre><code class="bash">curl --connect-timeout 10 &quot;http://WIN_TS_IP:11434/api/tags&quot;
+</code></pre>
 <p>最后，如果要让 QQ 机器人改用本地模型，在 AstrBot <strong>Config → AI → Model → Chat Model</strong> 中切回 <code>Peach-本地模型/peach-framboise:latest</code> 并保存。</p>
 <h3 id="日常使用建议"><a href="#日常使用建议" class="headerlink" title="日常使用建议"></a>日常使用建议</h3><ul>
 <li>平时使用 DeepSeek：AstrBot 默认对话模型设为 DeepSeek，可以退出 Ollama，节省本地显存。</li>
@@ -670,7 +729,124 @@
 
 
     
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<!-- hexo injector body_end start -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    mermaid.initialize({"startOnLoad":false,"theme":"default"});
+  });
+</script>
+
+<script>
+(async function () {
+  async function renderMermaidBlocks() {
+    if (!window.mermaid) {
+      console.error('[Mermaid] Mermaid.js 未加载');
+      return;
+    }
+
+    try {
+      // 从服务器重新获取未经前端脚本修改的 HTML
+      const response = await fetch(location.href, {
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          '获取原始 HTML 失败：HTTP ' + response.status
+        );
+      }
+
+      const html = await response.text();
+
+      // 解析原始 HTML，而不是直接读取当前页面 DOM
+      const sourceDoc = new DOMParser().parseFromString(
+        html,
+        'text/html'
+      );
+
+      const sourceBlocks = Array.from(
+        sourceDoc.querySelectorAll('.mermaid')
+      );
+
+      const targetBlocks = Array.from(
+        document.querySelectorAll('.mermaid')
+      );
+
+      if (sourceBlocks.length !== targetBlocks.length) {
+        console.warn(
+          '[Mermaid] 源码容器数量与页面容器数量不同',
+          sourceBlocks.length,
+          targetBlocks.length
+        );
+      }
+
+      for (
+        let i = 0;
+        i < Math.min(
+          sourceBlocks.length,
+          targetBlocks.length
+        );
+        i++
+      ) {
+        const source = sourceBlocks[i].textContent
+          .replace(/\r\n?/g, '\n')
+          .trim();
+
+        const target = targetBlocks[i];
+
+        if (!source) {
+          console.warn('[Mermaid] 第 ' + (i + 1) + ' 个图表源码为空');
+          continue;
+        }
+
+        try {
+          console.log(
+            '[Mermaid] 源码检查：',
+            JSON.stringify(source)
+          );
+
+          const result = await window.mermaid.render(
+            'mermaid-fixed-' + i + '-' + Date.now(),
+            source
+          );
+
+          // 用正确生成的 SVG 替换错误图或旧内容
+          target.innerHTML = result.svg;
+
+          if (typeof result.bindFunctions === 'function') {
+            result.bindFunctions(target);
+          }
+
+          console.info(
+            '[Mermaid] 图表渲染成功：',
+            i + 1
+          );
+        } catch (error) {
+          console.error(
+            '[Mermaid] 第 ' + (i + 1) + ' 个图表渲染失败：',
+            error
+          );
+        }
+      }
+    } catch (error) {
+      console.error('[Mermaid] 初始化失败：', error);
+    }
+  }
+
+  // 等页面及 Mermaid.js 加载完成
+  if (document.readyState === 'complete') {
+    renderMermaidBlocks();
+  } else {
+    window.addEventListener(
+      'load',
+      renderMermaidBlocks,
+      { once: true }
+    );
+  }
+})();
+</script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
 
 <!-- 页面点击小红心 -->

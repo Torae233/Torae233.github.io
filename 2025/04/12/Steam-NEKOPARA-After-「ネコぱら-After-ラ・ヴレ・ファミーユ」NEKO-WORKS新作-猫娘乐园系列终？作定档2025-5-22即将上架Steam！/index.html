@@ -294,7 +294,124 @@
 
 
     
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<!-- hexo injector body_end start -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    mermaid.initialize({"startOnLoad":false,"theme":"default"});
+  });
+</script>
+
+<script>
+(async function () {
+  async function renderMermaidBlocks() {
+    if (!window.mermaid) {
+      console.error('[Mermaid] Mermaid.js 未加载');
+      return;
+    }
+
+    try {
+      // 从服务器重新获取未经前端脚本修改的 HTML
+      const response = await fetch(location.href, {
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          '获取原始 HTML 失败：HTTP ' + response.status
+        );
+      }
+
+      const html = await response.text();
+
+      // 解析原始 HTML，而不是直接读取当前页面 DOM
+      const sourceDoc = new DOMParser().parseFromString(
+        html,
+        'text/html'
+      );
+
+      const sourceBlocks = Array.from(
+        sourceDoc.querySelectorAll('.mermaid')
+      );
+
+      const targetBlocks = Array.from(
+        document.querySelectorAll('.mermaid')
+      );
+
+      if (sourceBlocks.length !== targetBlocks.length) {
+        console.warn(
+          '[Mermaid] 源码容器数量与页面容器数量不同',
+          sourceBlocks.length,
+          targetBlocks.length
+        );
+      }
+
+      for (
+        let i = 0;
+        i < Math.min(
+          sourceBlocks.length,
+          targetBlocks.length
+        );
+        i++
+      ) {
+        const source = sourceBlocks[i].textContent
+          .replace(/\r\n?/g, '\n')
+          .trim();
+
+        const target = targetBlocks[i];
+
+        if (!source) {
+          console.warn('[Mermaid] 第 ' + (i + 1) + ' 个图表源码为空');
+          continue;
+        }
+
+        try {
+          console.log(
+            '[Mermaid] 源码检查：',
+            JSON.stringify(source)
+          );
+
+          const result = await window.mermaid.render(
+            'mermaid-fixed-' + i + '-' + Date.now(),
+            source
+          );
+
+          // 用正确生成的 SVG 替换错误图或旧内容
+          target.innerHTML = result.svg;
+
+          if (typeof result.bindFunctions === 'function') {
+            result.bindFunctions(target);
+          }
+
+          console.info(
+            '[Mermaid] 图表渲染成功：',
+            i + 1
+          );
+        } catch (error) {
+          console.error(
+            '[Mermaid] 第 ' + (i + 1) + ' 个图表渲染失败：',
+            error
+          );
+        }
+      }
+    } catch (error) {
+      console.error('[Mermaid] 初始化失败：', error);
+    }
+  }
+
+  // 等页面及 Mermaid.js 加载完成
+  if (document.readyState === 'complete') {
+    renderMermaidBlocks();
+  } else {
+    window.addEventListener(
+      'load',
+      renderMermaidBlocks,
+      { once: true }
+    );
+  }
+})();
+</script>
+<!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":300,"height":600},"mobile":{"show":false},"rect":"opacity:0.7","log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
 
 <!-- 页面点击小红心 -->
